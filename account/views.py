@@ -2,10 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 def accountpage(request):
-    return HttpResponse("account page")
+    return render (request, "account/account.html")
 
 def register(request):
-    return HttpResponse("registerpage")
+    return render (request, "account/register.html")
 
 def login(request):
-    return HttpResponse("loginpage")
+    return render (request, "account/login.html")
