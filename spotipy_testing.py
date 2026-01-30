@@ -1,4 +1,7 @@
-import spotipy
-from spotipy.oauth2 import SpotipyOAuth
+from dotenv import load_dotenv
+import os
+#getting things that shouldn't be committed
+load_dotenv()
 
-#wait half way through this i realised i cant even use the spotify web api help me
+client_id = os.getenv("CLIENT_ID")
+client_secret = os.getenv("CLIENT_SECRET")
