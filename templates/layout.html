@@ -13,7 +13,13 @@
 <body>
     <nav>
         <ul>
-            <li>This is your nav bar</li>
+            <li> Hi there, {{request.user}}</li>
+            <li> <a href="{% url "account" %}">account</a></li>
+            <li> <a href="{% url "register" %}">register </a></li>
+            <li> <a href="{% url "login" %}">login</a></li>
+            <li> <a href="{% url "callback" %}">callback</a></li>
+            <li><a href="{% url "spotifyapipage" %}">spotifyapi</a></li>
+            <li><a href="{% url "logout" %}">logout</a></li>
             <!--fill in with more content later-->
         </ul>
     </nav>

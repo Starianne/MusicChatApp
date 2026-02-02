@@ -45,6 +45,10 @@ def login_view(request):
     context = {}
     return render (request, "account/login.html",context)
 
+def logout_view(request):
+    logout(request)
+    return redirect('/account/login')
+
 def callback_view(request): #will use later
     return HttpResponse(request, "Boo")
 

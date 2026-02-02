@@ -8,6 +8,6 @@ class CreateUserForm(UserCreationForm): #inherits usercreationform
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={"class":"input", "type":"password", "placeholder":"enter password"}), label = "Enter password")
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={"class":"input", "type":"password", "placeholder":"re-enter password"}), label="Re-enter password")
 
-class Meta: 
-    model = User
-    fields = ["username", "email", "password1", "password2"] 
+    class Meta: #must be inside class
+        model = User
+        fields = ["username", "email", "password1", "password2"] 
