@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Spotify login
+{% endblock %}
+
+{% block content %}
+    <h1> This is your spotify page:</h1>
+    <p> I need to login to spotify here, after it needs to have the log in recognised </p>
+    <a href="{% url "spotifyapipage" %}"> log in to spotify </a>
+{% endblock %}
