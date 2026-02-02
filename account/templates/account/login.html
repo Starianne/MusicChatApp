@@ -6,5 +6,12 @@
 
 {% block content %}
     <h1> This is the login page:</h1>
-    <p> this will have content later</p>
+    {% for message in messages %}
+        <p id='messages'>{{message}}</p>
+    {% endfor %}
+    <form method='POST' action=''>
+        {% csrf_token %}
+        <input type="text" name = 'username' placeholder="enter username"/>
+        <input type="password" name = 'password' placeholder="enter password"/>
+        <input type="submit" name = "Login to account">
 {% endblock %}
