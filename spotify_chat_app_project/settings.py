@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'daphne',
-    'channels'
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -73,11 +73,7 @@ TEMPLATES = [
 
 ASGI_APPLICATION = 'spotify_chat_app_project.asgi.application'
 
-CHANNEL_LAYERS = {
-    'default':{
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',
-    },
-}
+
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
