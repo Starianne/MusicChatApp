@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
-def testchat_view(request):
-    return HttpResponse(request, "Boo!!!")
+def index(request):
+    return render(request, "chat/index.html")
