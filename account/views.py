@@ -48,13 +48,13 @@ def logout_view(request):
     logout(request)
     return redirect('/account/login')
 
-def callback_view(request): #will use later
-    return HttpResponse(request, "Boo")
+#def callback_view(request): #will use later
+#    return HttpResponse(request, "Boo")
 
 def spotifylogin_view(request): #will use later
     return render (request, "account/spotifylogin.html")
 
-def spotifyapipage_view(request):
+def callback_view(request):
     sp= spotipy.Spotify(
         auth_manager=SpotifyOAuth(
             client_id = os.getenv("CLIENT_ID"),
