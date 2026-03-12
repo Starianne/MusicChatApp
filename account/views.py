@@ -7,12 +7,10 @@ from django.contrib.auth import authenticate, login, logout
 
 #i think i put the spotify stuff here for now
 from dotenv import load_dotenv
-import os
 #getting things that shouldn't be committed
 load_dotenv()
 
-import spotipy
-from spotipy.oauth2 import SpotifyOAuth
+
 
 
 def accountpage(request):
@@ -47,24 +45,3 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('/account/login')
-
-#def callback_view(request): #will use later
-#    return HttpResponse(request, "Boo")
-
-def spotifylogin_view(request): #will use later
-    return render (request, "account/spotifylogin.html")
-
-def callback_view(request):
-    sp= spotipy.Spotify(
-        auth_manager=SpotifyOAuth(
-            client_id = os.getenv("CLIENT_ID"),
-            client_secret = os.getenv("CLIENT_SECRET"),
-            redirect_uri = 'http://127.0.0.1:8000/account/callback',
-            scope='user-top-read'
-        )
-    )
-    results = sp.current_user_saved_tracks()
-    for idx, item in enumerate(results['items']):
-        track = item['track']
-        print(idx, track['artists'][0]['name'], " - ", track['name'])
-    return HttpResponse (request, print(sp))
