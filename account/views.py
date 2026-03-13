@@ -3,9 +3,6 @@ from django.http import HttpResponse
 from .forms import CreateUserForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-
-
-#i think i put the spotify stuff here for now
 from dotenv import load_dotenv
 #getting things that shouldn't be committed
 load_dotenv()
@@ -17,14 +14,16 @@ def accountpage(request):
     return render (request, "account/account.html")
 
 def register_view(request): 
-    form = CreateUserForm()
+    form = CreateUserForm() #sets up create user form
     if request.method == 'POST':
-        form = CreateUserForm(request.POST)
+        form = CreateUserForm(request.POST) #renders form and passes in post data
         if form.is_valid():
-            form.save()
-            user = form.cleaned_data.get('username')
-            messages.success(request, 'Account was created for ' + user)
-            return redirect('/account/login')
+            new_user = form.save() #makes user in database
+            user_name = form.cleaned_data.get('username')
+            messages.success(request, 'Account was created for ' + user_name)
+            new_user = authenticate(username=form.cleaned_data["username"], password=form.cleaned_data["password1"])
+            login(request, new_user)
+            return redirect('/') #change this to match later
         
     context = {'form':form} 
     return render (request, "account/register.html", context)
