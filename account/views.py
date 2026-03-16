@@ -4,6 +4,7 @@ from .forms import CreateUserForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from dotenv import load_dotenv
+import requests
 #getting things that shouldn't be committed
 load_dotenv()
 
@@ -43,4 +44,16 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('/account/login')
+    return redirect('account/login')
+
+def search_view(request):
+    if request.method == 'GET':
+        searched_track = request.GET.get('track')
+        url = f"https://api.deezer.com/search?q={searched_track}"
+        response = requests.get(url)
+        data = response.json()
+        results = data["data"][:5]
+    return render (request, "account/search.html", {"results": results})
+
+def match_view(request):
+    return render (request, 'account/match.html')
