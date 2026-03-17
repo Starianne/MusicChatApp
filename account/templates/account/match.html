@@ -8,14 +8,37 @@
     <title>match</title>
 </head>
 <body>
+
     <div id="container">
         <h2>What do you want to match by?</h2>
         <div id="artist_search">
-            <p>Match by Top 5 Artists</p>
+            <h2>Match by Top 5 Artists</h2>
         </div>
         <div id="song_search">
-            <p>Match by Top 5 Songs</p>
+            <h2>Match by Top 5 Songs</h2>
         </div>
     </div>
 </body>
+<script>
+    let artistSearchContainer = document.getElementById('artist_search')
+    let songSearchContainer = document.getElementById('song_search')
+
+    //add event listener click to lead to other pages 
+    //add css, match html to onenote
+
+    artistSearchContainer.addEventListener('click', function() {
+        artistSearchContainer.classList.toggle('active');
+        artistSearchContainer.style.background = 'rgb(152, 69, 152)'
+        window.location.replace("/account/search")
+        songSearchContainer.style.display = 'none';
+        
+    });
+
+    songSearchContainer.addEventListener('click', function() {
+        songSearchContainer.classList.toggle('active');
+        songSearchContainer.style.background = 'rgb(152, 69, 152)'
+        window.location.replace("/account/search")
+        artistSearchContainer.style.display = 'none';
+    });
+</script>
 </html>
