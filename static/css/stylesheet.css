@@ -54,6 +54,21 @@ nav ul li a {
     color: #ffffff;
 }
 
+.messages {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.error {
+  float: center;
+  display: block;
+  text-align: center;
+  padding: 10px 25px;
+  color: #ffffff;
+}
+
 #song_search {
     width: 50vw;
     height: 25vh;
@@ -82,4 +97,5 @@ nav ul li a {
 
 .active {
     transform: scale(1.5);
+    
 }

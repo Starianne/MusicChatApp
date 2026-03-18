@@ -9,6 +9,14 @@
     <form method='GET' action=''>
         <input type="text" name = 'track' placeholder="enter track"/>
         <input type="submit" name = "search">
+    </form>
+    {% if messages %}
+    <ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
 
     {% for result in results %}
     <div>

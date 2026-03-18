@@ -24,21 +24,45 @@
     let songSearchContainer = document.getElementById('song_search')
 
     //add event listener click to lead to other pages 
-    //add css, match html to onenote
+    function animateWithEvent(element, removedElement, animationClass) {
+        return new Promise((resolve) => {
+            element.style.background = 'rgb(152, 69, 152)'
+            removedElement.style.display = 'none';
+            element.classList.toggle(animationClass);
+            element.addEventListener('transitionend', () => {
+                resolve();
+            }, { once: true});
+        });
+    }
+
 
     artistSearchContainer.addEventListener('click', function() {
-        artistSearchContainer.classList.toggle('active');
-        artistSearchContainer.style.background = 'rgb(152, 69, 152)'
-        window.location.replace("/account/search")
-        songSearchContainer.style.display = 'none';
-        
+        function artistSearchTransition() {
+            return new Promise((resolve) => {
+                resolve(window.location.replace("/account/artistSearch"));
+            });
+            
+        }        
+        async function sequenceArtist(){
+            await animateWithEvent(artistSearchContainer, songSearchContainer, 'active')
+            await artistSearchTransition()
+        }
+
+        sequenceArtist();
     });
 
     songSearchContainer.addEventListener('click', function() {
-        songSearchContainer.classList.toggle('active');
-        songSearchContainer.style.background = 'rgb(152, 69, 152)'
-        window.location.replace("/account/search")
-        artistSearchContainer.style.display = 'none';
+        function songSearchTransition() {
+            return new Promise((resolve) => {
+                resolve(window.location.replace("/account/search"));
+            });
+        }
+        async function sequenceSong(){
+            await animateWithEvent(songSearchContainer, artistSearchContainer, 'active');
+            await songSearchTransition();
+        }
+
+        sequenceSong();
     });
 </script>
 </html>

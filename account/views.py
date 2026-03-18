@@ -25,6 +25,9 @@ def register_view(request):
             new_user = authenticate(username=form.cleaned_data["username"], password=form.cleaned_data["password1"])
             login(request, new_user)
             return redirect('/') #change this to match later
+        #else: #add error messages tomorrow for register and log in views
+            #if not form.cleaned_data["username"] : #ts probably isnt right
+                #pass
         
     context = {'form':form} 
     return render (request, "account/register.html", context)
@@ -39,7 +42,7 @@ def login_view(request):
             login(request, user)
             return redirect('/')
         else:
-            messages.info(request, 'Usergname or Password is incorrect')
+            messages.error(request, 'Username or Password is incorrect')
     return render (request, "account/login.html")
 
 def logout_view(request):
@@ -49,11 +52,34 @@ def logout_view(request):
 def search_view(request):
     if request.method == 'GET':
         searched_track = request.GET.get('track')
-        url = f"https://api.deezer.com/search?q={searched_track}"
-        response = requests.get(url)
-        data = response.json()
-        results = data["data"][:5]
+        if searched_track == None:
+            results = None
+        else:
+            url = f"https://api.deezer.com/search?q={searched_track}"
+            response = requests.get(url)
+            data = response.json()
+            if list(data.items())[0][0] == 'error':
+                results = None
+                messages.error(request, 'You have to enter a Song!')
+            else:
+                results = data["data"][:5]
     return render (request, "account/search.html", {"results": results})
+
+def artist_search_view(request):
+    if request.method == 'GET':
+        searched_artist = request.GET.get('artist')
+        if searched_artist == None:
+            results = None
+        else:
+            url = f"https://api.deezer.com/search/artist?q={searched_artist}"
+            response = requests.get(url)
+            data = response.json()
+            if list(data.items())[0][0] == 'error':
+                results = None
+                messages.error(request, 'You have to enter an Artist!')
+            else:
+                results = data["data"][:5]
+    return render (request, "account/artistSearch.html", {"results": results})
 
 def match_view(request):
     return render (request, 'account/match.html')
