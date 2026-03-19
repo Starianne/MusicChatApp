@@ -62,7 +62,7 @@ def search_view(request):
                 results = None
                 messages.error(request, 'You have to enter a Song!')
             else:
-                results = data["data"][:5]
+                results = data["data"][:10]
     return render (request, "account/search.html", {"results": results})
 
 def artist_search_view(request):
@@ -78,7 +78,7 @@ def artist_search_view(request):
                 results = None
                 messages.error(request, 'You have to enter an Artist!')
             else:
-                results = data["data"][:5]
+                results = data["data"][:10]
     return render (request, "account/artistSearch.html", {"results": results})
 
 def match_view(request):

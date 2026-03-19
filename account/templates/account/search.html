@@ -5,10 +5,33 @@
 {% endblock %}
 
 {% block content %}
-    <h1> This will let you search songs (integrate later)</h1>
-    <form method='GET' action=''>
+    <div class="songSelectionContainer">
+        <h2>Choose your Top 5:</h2>
+        <div class="selectionContainer">
+            <div class="selectedSong">
+                <img>
+                <p>this is a song name</p>
+            </div>
+            <div class="selectedSong">
+                <img>
+                <p>this is a song name</p>
+            </div>
+            <div class="selectedSong">
+                <img>
+                <p>this is a song name</p>
+            </div>
+            <div class="selectedSong">
+                <img>
+                <p>this is a song name</p>
+            </div>
+            <div class="selectedSong">
+                <img>
+                <p>this is a song name</p>
+            </div>
+        </div>
+    </div>
+    <form method='GET' action='' autocomplete="off">
         <input type="text" name = 'track' placeholder="enter track"/>
-        <input type="submit" name = "search">
     </form>
     {% if messages %}
     <ul class="messages">
@@ -19,9 +42,23 @@
     {% endif %}
 
     {% for result in results %}
-    <div>
+    <div class="song">
         <p>{{ result.title }} - {{ result.artist.name }}</p>
         <img src="{{ result.album.cover_medium }}">
     </div>
     {% endfor %}
+<script>
+    const searchList = document.getElementsByClassName('song');
+    console.log(searchList);
+
+    var selectedSongs = [];
+
+    for (var i=0; i < 10; i++) {
+        searchList[i].addEventListener("click", function() {
+            selectedSongs.push(searchList[i])
+            
+        })
+    }
+    console.log(selectedSongs)
+</script>
 {% endblock %}
