@@ -8,10 +8,33 @@
     <title>Artist Search</title>
 </head>
 <body>
-    <h1> This will let you search artists</h1>
-    <form method='GET' action=''>
+    <div class="itemSelectonContainer">
+        <h2>Choose your Top 5:</h2>
+        <div class="selectionContainer">
+            <div class="selectedItem">
+                <img>
+                <p>this is an artist</p>
+            </div>
+            <div class="selectedItem">
+                <img>
+                <p>this is an artist</p>
+            </div>
+            <div class="selectedItem">
+                <img>
+                <p>this is an artist</p>
+            </div>
+            <div class="selectedItem">
+                <img>
+                <p>this is an artist</p>
+            </div>
+            <div class="selectedItem">
+                <img>
+                <p>this is an artist</p>
+            </div>
+        </div>
+    </div>
+    <form method='GET' action='' autocomplete="off">
         <input type="text" name = 'artist' placeholder="enter artist"/>
-        <input type="submit" name = "search"> 
     </form>
     {% if messages %}
     <ul class="messages">
@@ -20,11 +43,11 @@
     {% endfor %}
     </ul>
     {% endif %}
-
+    <div class="searchContainer">
     {% for result in results %}
-    <div>
+    <div class="searchItem">
+        <img src="{{ result.picture }}" class="searchItemImg">
         <p>{{ result.name }}</p>
-        <img src="{{ result.picture }}">
     </div>
     {% endfor %}
 </body>

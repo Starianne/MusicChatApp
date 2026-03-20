@@ -27,6 +27,17 @@ p, h1, h2 {
      gap: 10vh; /*space between artist_search and song_search*/
 }
 
+.title{
+    border: outset 2px rgba(255, 255, 255,0.2);
+    border-radius: 20px;
+    box-shadow: 
+    2px 2px 6px 0 rgba(0, 0, 0, 0.25),
+    -2px -2px 8px 0 rgba(255, 255, 255, 0.25);
+    background: linear-gradient(-45deg, rgba(0,0,0,0.22), rgba(142, 141, 141, 0.15));
+    margin-bottom: 3.5vh;
+    padding: 20px;
+}
+
 nav {
     border: outset 2px rgba(255, 255, 255,0.2);
     border-radius: 20px;
@@ -84,6 +95,9 @@ nav ul li a {
     justify-content: center;
     align-items: center;
     transition: all 0.5s ease;
+    box-shadow: 
+    12px 12px 16px 0 rgba(0, 0, 0, 0.25) inset,
+    -12px -12px 16px 0 rgba(102, 102, 102, 0.25) inset;
 }
 
 #artist_search{
@@ -97,6 +111,9 @@ nav ul li a {
     justify-content: center;
     align-items: center;
     transition: all 0.5s ease;
+    box-shadow: 
+    12px 12px 16px 0 rgba(0, 0, 0, 0.25) inset,
+    -12px -12px 16px 0 rgba(102, 102, 102, 0.25) inset;
 }
 
 .active {
@@ -104,7 +121,41 @@ nav ul li a {
     
 }
 
-.songSelectionContainer {
+/* Search bar and search item stuff */
+
+.searchContainer {
+    background-color: #2d2d2d;
+    width: 50vw;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-content: normal;
+    gap: 8px;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.searchItem{
+    margin-left: 30px;
+    margin-right: 30px;   
+    display: flex;
+    align-items: stretch;
+    border-bottom: outset 2px rgba(255, 255, 255,0.2);
+}
+
+.searchItemImg {
+    border-radius: 28px;
+    border: outset 2px rgba(255, 255, 255,0.2);
+    margin-right: 2px;
+    max-height: 4vh;
+}
+
+.itemSelectionContainer {
     border: outset 2px rgba(255, 255, 255,0.2);
     border-radius: 20px;
     box-shadow: 
@@ -114,6 +165,7 @@ nav ul li a {
     margin-bottom: 5vh;
     margin-left: 30px;
     margin-right: 30px;    
+    margin-top: 4vh;
 }
 
 .selectionContainer {
@@ -127,13 +179,14 @@ nav ul li a {
 
 }
 
-.selectedSong {
+.selectedItem {
     float: left;
     padding: 20px;
     margin-left: 2.5vw;
     margin-right: 2.5vw;
 }
 
+/*searchbars*/
 input {
     color: rgb(255, 255, 255);
     margin: 20px;
@@ -152,7 +205,7 @@ input[type="text"] {
     width: 50vw;
     line-height: 5vh;
     border: outset 2px rgba(255, 255, 255,0.2);
-    box-shadow: 
-    12px 12px 16px 0 rgba(0, 0, 0, 0.25) inset,
-    -6px -6px 16px 0 rgba(0, 0, 0, 0.25) inset;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.10);
+    border-radius: 20px;
+    margin-bottom: 0;
 }

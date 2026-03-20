@@ -1,30 +1,33 @@
-{% extends 'layout.html' %}
-
-{% block title %}
-    Search for songs
-{% endblock %}
-
-{% block content %}
-    <div class="songSelectionContainer">
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'css/stylesheet.css' %}">
+    <title>Song Search</title>
+</head>
+<body>
+    <div class="itemSelectionContainer">
         <h2>Choose your Top 5:</h2>
         <div class="selectionContainer">
-            <div class="selectedSong">
+            <div class="selectedItem">
                 <img>
                 <p>this is a song name</p>
             </div>
-            <div class="selectedSong">
+            <div class="selectedItem">
                 <img>
                 <p>this is a song name</p>
             </div>
-            <div class="selectedSong">
+            <div class="selectedItem">
                 <img>
                 <p>this is a song name</p>
             </div>
-            <div class="selectedSong">
+            <div class="selectedItem">
                 <img>
                 <p>this is a song name</p>
             </div>
-            <div class="selectedSong">
+            <div class="selectedItem">
                 <img>
                 <p>this is a song name</p>
             </div>
@@ -40,25 +43,24 @@
     {% endfor %}
     </ul>
     {% endif %}
-
+    <div class="searchContainer">
     {% for result in results %}
-    <div class="song">
-        <p>{{ result.title }} - {{ result.artist.name }}</p>
-        <img src="{{ result.album.cover_medium }}">
+    <div class="searchItem">
+        <img src="{{ result.album.cover_small }}" class="searchItemImg"><p>{{ result.title }} - {{ result.artist.name }}</p>
     </div>
     {% endfor %}
+    </div>
+</body>
 <script>
-    const searchList = document.getElementsByClassName('song');
+    const searchList = document.getElementsByClassName('searchItem');
     console.log(searchList);
-
-    var selectedSongs = [];
-
-    for (var i=0; i < 10; i++) {
-        searchList[i].addEventListener("click", function() {
-            selectedSongs.push(searchList[i])
-            
-        })
+    sessionStorage.setItem("songlist", searchList);
+    let storedSongs = sessionStorage.getItem("songlist");
+    for (song in storedSongs) {
+        console.log(song);
+        var para = document.createElement("p");
+        para.textContent = song;
+        document.getElementById("searchContainer").appendChild(para);
     }
-    console.log(selectedSongs)
 </script>
-{% endblock %}
+</html>
