@@ -12,24 +12,24 @@
         <h2>Choose your Top 5:</h2>
         <div class="selectionContainer">
             <div class="selectedItem">
-                <img>
-                <p>this is a song name</p>
+                <img src="">
+                <p></p>
             </div>
             <div class="selectedItem">
-                <img>
-                <p>this is a song name</p>
+                <img src="">
+                <p></p>
             </div>
             <div class="selectedItem">
-                <img>
-                <p>this is a song name</p>
+                <img src="">
+                <p></p>
             </div>
             <div class="selectedItem">
-                <img>
-                <p>this is a song name</p>
+                <img src="">
+                <p></p>
             </div>
             <div class="selectedItem">
-                <img>
-                <p>this is a song name</p>
+                <img src="">
+                <p></p>
             </div>
         </div>
     </div>
@@ -45,22 +45,54 @@
     {% endif %}
     <div class="searchContainer">
     {% for result in results %}
-    <div class="searchItem">
-        <img src="{{ result.album.cover_small }}" class="searchItemImg"><p>{{ result.title }} - {{ result.artist.name }}</p>
+    <div class="searchItem" id="{{ result.id }}">
+        <img src="{{ result.album.cover_medium }}" class="searchItemImg"><p>{{ result.title }} - {{ result.artist.name }}</p>
     </div>
     {% endfor %}
     </div>
 </body>
 <script>
     const searchList = document.getElementsByClassName('searchItem');
-    console.log(searchList);
-    sessionStorage.setItem("songlist", searchList);
-    let storedSongs = sessionStorage.getItem("songlist");
-    for (song in storedSongs) {
-        console.log(song);
-        var para = document.createElement("p");
-        para.textContent = song;
-        document.getElementById("searchContainer").appendChild(para);
+    let selectedItems = document.getElementsByClassName('selectedItem');
+    let storedSongs = JSON.parse(sessionStorage.getItem("songlist")) || [];
+
+    for (let i of selectedItems) {
+        i.addEventListener("mouseover", function() {
+            i.innerHTML += "<p>New content added!</p>";
+        })
     }
+
+    for (let item of searchList) {
+        item.addEventListener("click", function() {
+            for (let selected of selectedItems) {
+                if (selected.querySelector("p").innerText == "") {
+                    selected.querySelector("p").innerText = item.querySelector('p').innerText;
+                    selected.querySelector("img").src = item.querySelector('img').src;
+
+                    let title = item.querySelector('p')?.innerText || "";
+                    let img = item.querySelector('img')?.src || "";
+                    
+                    let songUpdate = [];
+                    for (let s of selectedItems) {
+                        songUpdate.push({
+                            title: s.querySelector("p").innerText,
+                            img: s.querySelector("img").src
+                        });
+
+                    }
+
+                    sessionStorage.setItem("songlist", JSON.stringify(songUpdate));
+                    break; //required
+                }
+            }
+        });
+    }
+    
+    for (let i = 0; i < storedSongs.length && i< selectedItems.length; i++) {
+        selectedItems[i].querySelector("p").innerText = storedSongs[i].title;
+        selectedItems[i].querySelector("img").src = storedSongs[i].img;
+    }
+
+
 </script>
 </html>
