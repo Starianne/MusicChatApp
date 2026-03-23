@@ -20,11 +20,9 @@ def register_view(request):
         form = CreateUserForm(request.POST) #renders form and passes in post data
         if form.is_valid():
             new_user = form.save() #makes user in database
-            user_name = form.cleaned_data.get('username')
-            messages.success(request, 'Account was created for ' + user_name)
             new_user = authenticate(username=form.cleaned_data["username"], password=form.cleaned_data["password1"])
             login(request, new_user)
-            return redirect('/') #change this to match later
+            return redirect('/account/match') #change this to match later
         #else: #add error messages tomorrow for register and log in views
             #if not form.cleaned_data["username"] : #ts probably isnt right
                 #pass
@@ -58,7 +56,7 @@ def search_view(request):
             url = f"https://api.deezer.com/search?q={searched_track}"
             response = requests.get(url)
             data = response.json()
-            if list(data.items())[0][0] == 'error':
+            if list(data.items())[0][0] == 'error': #no items will return error
                 results = None
                 messages.error(request, 'You have to enter a Song!')
             else:

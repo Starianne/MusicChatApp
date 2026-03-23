@@ -12,23 +12,38 @@
         <h2>Choose your Top 5:</h2>
         <div class="selectionContainer">
             <div class="selectedItem">
-                <img src="">
+                <img src="" class="selectedItemImg">                
+                <button onmouseover="changeToRed(event)" onmouseout="changeToRed(event)" onclick="removeSong(event)">
+                    <img src="/static/img/xmark.svg"/>
+                </button>                
                 <p></p>
             </div>
             <div class="selectedItem">
-                <img src="">
+                <img src="" class="selectedItemImg">                
+                <button onmouseover="changeToRed(event)" onmouseout="changeToRed(event)" onclick="removeSong(event)">
+                    <img src="/static/img/xmark.svg"/>
+                </button>                
                 <p></p>
             </div>
             <div class="selectedItem">
-                <img src="">
+                <img src="" class="selectedItemImg">                
+                <button onmouseover="changeToRed(event)" onmouseout="changeToRed(event)" onclick="removeSong(event)">
+                    <img src="/static/img/xmark.svg"/>
+                </button>                
                 <p></p>
             </div>
             <div class="selectedItem">
-                <img src="">
+                <img src="" class="selectedItemImg">                
+                <button onmouseover="changeToRed(event)" onmouseout="changeToRed(event)" onclick="removeSong(event)">
+                    <img src="/static/img/xmark.svg"/>
+                </button>                
                 <p></p>
             </div>
             <div class="selectedItem">
-                <img src="">
+                <img src="" class="selectedItemImg">                
+                <button onmouseover="changeToRed(event)" onmouseout="changeToRed(event)" onclick="removeSong(event)">
+                    <img src="/static/img/xmark.svg"/>
+                </button>                
                 <p></p>
             </div>
         </div>
@@ -57,10 +72,31 @@
     let storedSongs = JSON.parse(sessionStorage.getItem("songlist")) || [];
 
     for (let i of selectedItems) {
-        i.addEventListener("mouseover", function() {
-            i.innerHTML += "<p>New content added!</p>";
-        })
+        let btn = i.querySelector('button')
+            i.addEventListener("mouseover", function() {
+                if (i.querySelector("p").innerText != "") {
+                    btn.style.display = "inline"
+                } else {
+                    btn.style.display = "none"
+                }
+            })
+            i.addEventListener("mouseout", function() {
+                btn.style.display = "none"
+            })            
+
     }
+
+    function changeToRed(e) {
+        e.target.closest("button").classList.toggle('filter')
+    }
+
+    function removeSong(e) {
+        var currentDiv = e.target.closest(".selectedItem")
+        currentDiv.querySelector("p").innerText=""
+        currentDiv.querySelector(".selectedItemImg").src=""
+        //add change to session storage 
+    }
+    //send data to model + do same on artist
 
     for (let item of searchList) {
         item.addEventListener("click", function() {

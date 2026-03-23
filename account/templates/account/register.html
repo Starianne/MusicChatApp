@@ -5,10 +5,12 @@
 {% endblock %}
 
 {% block content %}
+<div class="title">
     <h1> This is the register page:</h1>
+</div>
     <form method='POST' action="">
         {% csrf_token %}
-    <div class='container'>
+    <div class='formContainer'>
         <div class='field'>
             {{ form.username.label }}
             <br>

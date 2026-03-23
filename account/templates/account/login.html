@@ -5,13 +5,18 @@
 {% endblock %}
 
 {% block content %}
+<div class="title">
     <h1> This is the login page:</h1>
+</div>    
+<div class="formContainer">
     <form method='POST' action=''>
         {% csrf_token %}
-        <input type="text" name = 'username' placeholder="enter username"/>
-        <input type="password" name = 'password' placeholder="enter password"/>
+        <input type="username" name = 'username' placeholder="enter username" /> <br>
+        <input type="password" name = 'password' placeholder="enter password"/> <br>
         <input type="submit" name = "Login to account">
     </form>
+</div>
+
 
     {% if messages %}
     <ul class="messages">
