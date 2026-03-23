@@ -236,6 +236,22 @@ nav ul li a {
     object-fit: contain;
 }
 
+.selectionSubmitBtn {
+    margin-bottom: 5vh;
+    background-color: green;
+    color: #ffffff;
+    padding: 2vh;
+    border: outset 2px rgba(255, 255, 255,0.2);
+    border-radius: 20px;
+    transition: all 200ms ease-in-out;
+}
+
+.selectionSubmitBtn:hover {
+    background-color: rgb(0, 169, 0);
+    border: outset 2px rgba(255, 255, 255, 0.333);
+}
+
+
 .filter {
     filter: brightness(0) saturate(100%) invert(16%) sepia(100%) saturate(7000%) hue-rotate(0deg) brightness(95%) contrast(120%);
 }
