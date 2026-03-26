@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/stylesheet.css' %}"/>
-
+    <script src="{% static 'js/searches.js' %}" defer></script>
     <title>Song Search</title>
 </head>
 <body>
@@ -48,17 +48,24 @@
                 <p></p>
             </div>
         </div>
-        <button class="selectionSubmitBtn" onclick="">submit</button>
+        <button class="selectionSubmitBtn" onclick="submit()">submit</button>
     </div>
-    
-    <div class="messageContainer">
-        {% if messages %}
-        <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-        </ul>
-        {% endif %}
+    <div class="warningContainer">
+        <div class="warningTitle">
+            Warning!
+            <button onmouseover="changeToRed(event)" onmouseout="changeToRed(event)" onclick="removeWarning()">
+                <img src="/static/img/xmark.svg"/>
+            </button>                
+        </div>
+        <div class="messageContainer">
+            {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
     </div>
         
     <form method='GET' action='' autocomplete="off">
@@ -69,10 +76,10 @@
     <div class="searchContainer">
     {% for result in results %}
     <div class="searchItem" id="{{ result.id }}">
-        <img src="{{ result.album.cover_medium }}" class="searchItemImg"><p>{{ result.title }} - {{ result.artist.name }}</p>
+        <img src="{{ result.album.cover_medium }}" class="searchItemImg"><p class="songTitle">{{ result.title }}</p> <p>&nbsp;-&nbsp;</p> <p class="songArtist">{{ result.artist.name }}</p>
     </div>
     {% endfor %}
     </div>
 </body>
-<script src="{% static 'js/searches.js' %}"></script>
+
 </html>

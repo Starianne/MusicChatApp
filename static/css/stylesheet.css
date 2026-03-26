@@ -93,6 +93,47 @@ nav ul li a {
     overflow: hidden;
 }
 
+.warningContainer{
+    background-color: #ffffff;
+    padding-bottom: 3vh;
+    margin: 10vh;
+    display: none;
+    box-shadow: 
+    12px 12px 16px 0 rgba(0, 0, 0, 0.25),
+    -3px -3px 16px 0 rgba(0, 0, 0, 0.25);
+
+}
+
+
+.warningTitle{
+    color: rgb(255, 255, 255);
+    border: 1px solid #2d2d2d;
+    background-color: #1c1c1c;
+    padding: 2% 0 2% 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.warningTitle img {
+    border-radius: 60px;
+    max-height: 3vh;
+    min-height: 2vh;
+    display: block;
+}
+
+.warningTitle button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    max-block-size: 3vh;
+}
+
+.messageContainer {
+    padding: 2% 5%;
+    color: #000000;
+}
+
 .error {
   float: center;
   display: block;
@@ -153,7 +194,7 @@ nav ul li a {
     align-items: stretch;
     align-content: normal;
     gap: 8px;
-    border-radius: 20px;
+    border-radius:0 0 20px 20px;
     box-shadow: 0 8px 16px rgba(0,0,0,0.15);
 }
 
@@ -164,6 +205,10 @@ nav ul li a {
     display: flex;
     align-items: stretch;
     border-bottom: outset 2px rgba(255, 255, 255,0.2);
+}
+
+.searchContainer :hover {
+    background-color: #1c1c1c; /*get rid of margin and make this look nice */
 }
 
 .searchItemImg {
