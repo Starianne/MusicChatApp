@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/stylesheet.css' %}"/>
-    <script src="{% static 'js/searches.js' %}" defer></script>
+    <script src="{% static 'js/songSearch.js' %}" defer></script>
     <title>Song Search</title>
 </head>
 <body>
@@ -17,35 +17,40 @@
                 <button onmouseover="changeToRed(event)" onmouseout="changeToRed(event)" onclick="removeItem(event)">
                     <img src="/static/img/xmark.svg"/>
                 </button>                
-                <p></p>
+                <p class="selectedSongTitle"></p>
+                <p class="selectedSongArtist"></p>
             </div>
             <div class="selectedItem">
                 <img src="" class="selectedItemImg" >                
                 <button onmouseover="changeToRed(event)" onmouseout="changeToRed(event)" onclick="removeItem(event)">
                     <img src="/static/img/xmark.svg"/>
                 </button>                
-                <p></p>
+                <p class="selectedSongTitle"></p>
+                <p class="selectedSongArtist"></p>
             </div>
             <div class="selectedItem">
                 <img src="" class="selectedItemImg" >                
                 <button onmouseover="changeToRed(event)" onmouseout="changeToRed(event)" onclick="removeItem(event)">
                     <img src="/static/img/xmark.svg"/>
                 </button>                
-                <p></p>
+                <p class="selectedSongTitle"></p>
+                <p class="selectedSongArtist"></p>
             </div>
             <div class="selectedItem">
                 <img src="" class="selectedItemImg" >                
                 <button onmouseover="changeToRed(event)" onmouseout="changeToRed(event)" onclick="removeItem(event)">
                     <img src="/static/img/xmark.svg"/>
                 </button>                
-                <p></p>
+                <p class="selectedSongTitle"></p>
+                <p class="selectedSongArtist"></p>
             </div>
             <div class="selectedItem">
                 <img src="" class="selectedItemImg" >                
                 <button onmouseover="changeToRed(event)" onmouseout="changeToRed(event)" onclick="removeItem(event)">
                     <img src="/static/img/xmark.svg"/>
                 </button>                
-                <p></p>
+                <p class="selectedSongTitle"></p>
+                <p class="selectedSongArtist"></p>
             </div>
         </div>
         <button class="selectionSubmitBtn" onclick="submit()">submit</button>
@@ -69,14 +74,14 @@
     </div>
         
     <form method='GET' action='' autocomplete="off">
-        <input type="text" name = 'track' placeholder="enter track"/>
+        <input type="text" name = 'song' placeholder="enter song"/>
     </form>
 
 
     <div class="searchContainer">
     {% for result in results %}
     <div class="searchItem" id="{{ result.id }}">
-        <img src="{{ result.album.cover_medium }}" class="searchItemImg"><p class="songTitle">{{ result.title }}</p> <p>&nbsp;-&nbsp;</p> <p class="songArtist">{{ result.artist.name }}</p>
+        <img src="{{ result.album.cover_medium }}" class="searchItemImg"><p class="searchSongTitle">{{ result.title }}</p> <p>&nbsp;-&nbsp;</p> <p class="searchSongArtist">{{ result.artist.name }}</p>
     </div>
     {% endfor %}
     </div>

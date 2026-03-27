@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+
 from .forms import CreateUserForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from dotenv import load_dotenv
 import requests
+import json
 #getting things that shouldn't be committed
 load_dotenv()
 
@@ -23,9 +24,6 @@ def register_view(request):
             new_user = authenticate(username=form.cleaned_data["username"], password=form.cleaned_data["password1"])
             login(request, new_user)
             return redirect('/account/match') #change this to match later
-        #else: #add error messages tomorrow for register and log in views
-            #if not form.cleaned_data["username"] : #ts probably isnt right
-                #pass
         
     context = {'form':form} 
     return render (request, "account/register.html", context)
@@ -47,13 +45,30 @@ def logout_view(request):
     logout(request)
     return redirect('/account/login') #must have first / to redirect properly
 
-def search_view(request):
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+
+@csrf_exempt
+def get_selection(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        print(data)
+        print(type(data))
+        song_list = data['song_list'] #i need to pass ts into the user model
+        print(song_list[0])
+        return JsonResponse({'message': f'You selected: {song_list}'})
+    else:
+        return JsonResponse({'message': ''})
+
+
+
+def song_search_view(request):
     if request.method == 'GET':
-        searched_track = request.GET.get('track')
-        if searched_track == None:
+        searched_song = request.GET.get('song')
+        if searched_song == None:
             results = None
         else:
-            url = f"https://api.deezer.com/search?q={searched_track}"
+            url = f"https://api.deezer.com/search?q={searched_song}"
             response = requests.get(url)
             data = response.json()
             if list(data.items())[0][0] == 'error': #no items will return error
@@ -61,7 +76,7 @@ def search_view(request):
                 messages.error(request, 'You have to enter a Song!')
             else:
                 results = data["data"][:10]
-    return render (request, "account/search.html", {"results": results})
+    return render (request, "account/songSearch.html", {"results": results})
 
 def artist_search_view(request):
     if request.method == 'GET':
