@@ -16,7 +16,9 @@ function removeWarning() {
 function storeSong() {
     let songSelectionUpdate = [];
     for (let s of selectedItems) {
+        console.log(s)
         songSelectionUpdate.push({
+            songId: s.id,
             songTitle: s.querySelector(".selectedSongTitle").innerText,
             songArtist: s.querySelector(".selectedSongArtist").innerText,
             songImg: s.querySelector(".selectedItemImg").src
@@ -28,6 +30,7 @@ function storeSong() {
 
 function removeItem(e) {
     var currentDiv = e.target.closest(".selectedItem")
+    currentDiv.id = ""
     currentDiv.querySelector(".selectedSongTitle").innerText=""
     currentDiv.querySelector(".selectedSongArtist").innerText=""
     currentDiv.querySelector(".selectedItemImg").src=""
@@ -39,7 +42,7 @@ function removeItem(e) {
 function checkSelectionFull() {
     var full = false
     for (let i of selectedItems) {
-        if (i.querySelector(".selectedSongTitle").innerText != "") {
+        if (i.id != "") {
             full = true;
         } else {
             full = false;
@@ -89,7 +92,7 @@ async function sendSongs() {
 async function submit() {
     var full = checkSelectionFull()
     if (full) {
-        //basically pass data to view or model idk yet - clean data? check for song or artist or have parameter? or have separate functions to save for artist and song
+        //basically pass data to view or model 
         console.log(sessionStorage);
         var songList = JSON.parse(window.sessionStorage.songlist)
         console.log(songList)
@@ -137,6 +140,7 @@ for (let item of searchList) {
         } else {
             for (let i of selectedItems) { //loops to find empty spot
                 if (i.querySelector(".selectedSongTitle").innerText=="") {
+                    i.id = item.id
                     i.querySelector(".selectedSongTitle").innerText = item.querySelector(".searchSongTitle").innerText;
                     i.querySelector(".selectedSongArtist").innerText = item.querySelector(".searchSongArtist").innerText;
                     i.querySelector(".selectedItemImg").src = item.querySelector(".searchItemImg").src;
@@ -154,6 +158,7 @@ for (let item of searchList) {
 
 
 for (let i = 0; i < storedItems.length && i< selectedItems.length; i++) {
+    selectedItems[i].id = storedItems[i].id
     selectedItems[i].querySelector(".selectedSongTitle").innerText = storedItems[i].songTitle;
     selectedItems[i].querySelector(".selectedSongArtist").innerText = storedItems[i].songArtist;
     selectedItems[i].querySelector("img").src = storedItems[i].songImg;

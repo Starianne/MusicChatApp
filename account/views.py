@@ -4,6 +4,8 @@ from .forms import CreateUserForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from dotenv import load_dotenv
+from .models import Song
+
 import requests
 import json
 #getting things that shouldn't be committed
@@ -52,10 +54,29 @@ from django.http import JsonResponse
 def get_selection(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        print(data)
-        print(type(data))
         song_list = data['song_list'] #i need to pass ts into the user model
-        print(song_list[0])
+        for song in song_list:
+            if not Song.objects.filter(name__contains=song["songTitle"]):
+                top_song = Song.objects.create(
+                    name = song["songTitle"],
+                    deezer_id = song["songId"],
+                    album_art = song["songImg"],
+                    artist = song["songArtist"]
+                    )
+                
+
+                
+                print(top_song)
+            else:
+                print("That's not a new song :p")
+                #
+
+
+            
+             #store ts in the model
+        
+        #add to user top song model
+
         return JsonResponse({'message': f'You selected: {song_list}'})
     else:
         return JsonResponse({'message': ''})

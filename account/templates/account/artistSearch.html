@@ -12,35 +12,35 @@
     <div class="itemSelectionContainer">
         <h2>Choose your Top 5:</h2>
         <div class="selectionContainer">
-            <div class="selectedItem">
+            <div class="selectedItem" id="">
                 <img src="" class="selectedItemImg" >                
                 <button onmouseover="changeToRed(event)" onmouseout="changeToRed(event)" onclick="removeItem(event)">
                     <img src="/static/img/xmark.svg"/>
                 </button>                
                 <p></p>
             </div>
-            <div class="selectedItem">
+            <div class="selectedItem" id="">
                 <img src="" class="selectedItemImg" >                
                 <button onmouseover="changeToRed(event)" onmouseout="changeToRed(event)" onclick="removeItem(event)">
                     <img src="/static/img/xmark.svg"/>
                 </button>                
                 <p></p>
             </div>
-            <div class="selectedItem">
+            <div class="selectedItem" id="">
                 <img src="" class="selectedItemImg" >                
                 <button onmouseover="changeToRed(event)" onmouseout="changeToRed(event)" onclick="removeItem(event)">
                     <img src="/static/img/xmark.svg"/>
                 </button>                
                 <p></p>
             </div>
-            <div class="selectedItem">
+            <div class="selectedItem"id="">
                 <img src="" class="selectedItemImg" >                
                 <button onmouseover="changeToRed(event)" onmouseout="changeToRed(event)" onclick="removeItem(event)">
                     <img src="/static/img/xmark.svg"/>
                 </button>                
                 <p></p>
             </div>
-            <div class="selectedItem">
+            <div class="selectedItem" id="">
                 <img src="" class="selectedItemImg" >                
                 <button onmouseover="changeToRed(event)" onmouseout="changeToRed(event)" onclick="removeItem(event)">
                     <img src="/static/img/xmark.svg"/>
@@ -75,7 +75,7 @@
 
     <div class="searchContainer">
     {% for result in results %}
-    <div class="searchItem">
+    <div class="searchItem" id="{{ result.id }}">
         <img src="{{ result.picture }}" class="searchItemImg">
         <p>{{ result.name }}</p>
     </div>
