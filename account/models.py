@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 # Create your models here.
     
 class Song(models.Model):
@@ -15,4 +15,9 @@ class Song(models.Model):
         unique_together = ("name", "deezer_id", "album_art", "artist")
 
 class UserTopSongs(models.Model):
-    #user + 5 songs as foreign keys
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_top_songs")
+    song = models.ForeignKey("Song", on_delete=models.CASCADE, null=True)
+    rank = models.IntegerField()
+
+    class Meta:
+        unique_together = ("user", "rank") #otherwise you have multiple songs at rank 1 

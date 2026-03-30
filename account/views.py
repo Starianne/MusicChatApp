@@ -4,7 +4,7 @@ from .forms import CreateUserForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from dotenv import load_dotenv
-from .models import Song
+from .models import Song, UserTopSongs
 
 import requests
 import json
@@ -47,39 +47,41 @@ def logout_view(request):
     logout(request)
     return redirect('/account/login') #must have first / to redirect properly
 
-from django.views.decorators.csrf import csrf_exempt
+
 from django.http import JsonResponse
 
-@csrf_exempt
+#nope @csrf_exempt
 def get_selection(request):
-    if request.method == 'POST':
+    if request.method != 'POST':
+        return JsonResponse({"error": "Invalid request, how did you not POST this?"}, status=400)
+    
+    try:
         data = json.loads(request.body)
-        song_list = data['song_list'] #i need to pass ts into the user model
-        for song in song_list:
-            if not Song.objects.filter(name__contains=song["songTitle"]):
-                top_song = Song.objects.create(
-                    name = song["songTitle"],
-                    deezer_id = song["songId"],
-                    album_art = song["songImg"],
-                    artist = song["songArtist"]
-                    )
-                
+        song_list = data['song_list'] 
+    except (json.JSONDecodeError, KeyError):
+        return JsonResponse({"error": "Invalid request, there was an error"}, status=400)
+    #csrf_token bug
+    for rank,song in enumerate(song_list, start=1):
+        song_obj, created = Song.objects.get_or_create(
+            deezer_id = song["songId"],
+            defaults={
+                "name" : song["songTitle"],
+                "album_art" : song["songImg"],
+                "artist" : song["songArtist"]
+            }
+        )
 
-                
-                print(top_song)
-            else:
-                print("That's not a new song :p")
-                #
+        UserTopSongs.objects.update_or_create(
+            user=request.user,
+            rank=rank,
+            defaults={"song" : song_obj}
+        )
 
+            #store ts in the model
+    
+    #add to user top song model
 
-            
-             #store ts in the model
-        
-        #add to user top song model
-
-        return JsonResponse({'message': f'You selected: {song_list}'})
-    else:
-        return JsonResponse({'message': ''})
+    return JsonResponse({'message': f'You selected: {song_list} and they are saved'})
 
 
 

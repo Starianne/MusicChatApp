@@ -53,25 +53,42 @@ function checkSelectionFull() {
 };
 
 function checkSelection(toCheckItem) {
-    var found = false
+    var found = false;
     for (let i of selectedItems) {
         if (i.querySelector(".selectedSongTitle").innerText == toCheckItem.querySelector(".searchSongTitle").innerText && i.querySelector(".selectedSongArtist").innerText == toCheckItem.querySelector(".searchSongArtist").innerText) {
             //if checks songs' title and artist are the same
-            found = true
-            return found
+            found = true;
+            return found;
         }
 
     }
     return found
 };
 
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie != "") {
+        const cookies = document.cookie.split(";");
+        for (let cookie of cookies) {
+            cookie.trim();
+            if (cookie.startsWith(name + "=")) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 async function sendSongs() {
+    const csrftoken = getCookie("csrftoken");
     try {
         const url = "/account/get_selection/";
         const response = await fetch(url, {
             method: "POST",
             headers: {
                 'Content-type' : 'application/json',
+                "X-CSRFToken" : csrftoken
             },
             body: JSON.stringify({
                 song_list: JSON.parse(sessionStorage.getItem("songlist"))
