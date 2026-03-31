@@ -111,9 +111,17 @@ async function submit() {
     if (full) {
         //basically pass data to view or model 
         console.log(sessionStorage);
-        var songList = JSON.parse(window.sessionStorage.songlist)
-        console.log(songList)
+        var songList = JSON.parse(window.sessionStorage.songlist);
+        console.log(songList);
         await sendSongs();
+        for (let i of selectedItems) {
+            i.id = "";
+            i.querySelector(".selectedSongTitle").innerText="";
+            i.querySelector(".selectedSongArtist").innerText="";
+            i.querySelector(".selectedItemImg").src="";
+            storeSong();
+        }
+
     } else {
         var submitMessage = document.createElement("p")
         submitMessage.innerText = "You haven't picked all 5"
