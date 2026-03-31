@@ -61,9 +61,10 @@ def get_selection(request):
     except (json.JSONDecodeError, KeyError):
         return JsonResponse({"error": "Invalid request, there was an error"}, status=400)
     #csrf_token bug
-    for rank,song in enumerate(song_list, start=1):
+    for song in song_list:
+        song_id = song["songId"]
         song_obj, created = Song.objects.get_or_create(
-            deezer_id = song["songId"],
+            deezer_id = song_id,
             defaults={
                 "name" : song["songTitle"],
                 "album_art" : song["songImg"],
@@ -71,10 +72,9 @@ def get_selection(request):
             }
         )
 
-        UserTopSongs.objects.update_or_create(
-            user=request.user,
-            rank=rank,
-            defaults={"song" : song_obj}
+        UserTopSongs.objects.get_or_create(
+            user = request.user,
+            song = song_obj
         )
 
             #store ts in the model

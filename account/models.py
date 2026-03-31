@@ -17,7 +17,6 @@ class Song(models.Model):
 class UserTopSongs(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_top_songs")
     song = models.ForeignKey("Song", on_delete=models.CASCADE, null=True)
-    rank = models.IntegerField()
 
     class Meta:
-        unique_together = ("user", "rank") #otherwise you have multiple songs at rank 1 
+        unique_together = ("user", "song")  

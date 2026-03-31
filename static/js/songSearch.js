@@ -183,7 +183,7 @@ for (let item of searchList) {
 
 
 for (let i = 0; i < storedItems.length && i< selectedItems.length; i++) {
-    selectedItems[i].id = storedItems[i].id
+    selectedItems[i].id = storedItems[i].songId
     selectedItems[i].querySelector(".selectedSongTitle").innerText = storedItems[i].songTitle;
     selectedItems[i].querySelector(".selectedSongArtist").innerText = storedItems[i].songArtist;
     selectedItems[i].querySelector("img").src = storedItems[i].songImg;
