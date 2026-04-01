@@ -8,6 +8,5 @@ urlpatterns = [
     path('logout/', views.logout_view, name="logout"),
     path('get_selection/', views.get_selection, name="get_selection"),
     path('songSearch/', views.song_search_view, name="songSearch"),
-    path('artistSearch/', views.artist_search_view, name="artistSearch"),
     path('match/', views.match_view, name="match"),
 ]

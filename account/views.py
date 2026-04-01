@@ -50,7 +50,7 @@ def logout_view(request):
 
 from django.http import JsonResponse
 
-#nope @csrf_exempt
+
 def get_selection(request):
     if request.method != 'POST':
         return JsonResponse({"error": "Invalid request, how did you not POST this?"}, status=400)
@@ -100,22 +100,6 @@ def song_search_view(request):
             else:
                 results = data["data"][:10]
     return render (request, "account/songSearch.html", {"results": results})
-
-def artist_search_view(request):
-    if request.method == 'GET':
-        searched_artist = request.GET.get('artist')
-        if searched_artist == None:
-            results = None
-        else:
-            url = f"https://api.deezer.com/search/artist?q={searched_artist}"
-            response = requests.get(url)
-            data = response.json()
-            if list(data.items())[0][0] == 'error':
-                results = None
-                messages.error(request, 'You have to enter an Artist!')
-            else:
-                results = data["data"][:10]
-    return render (request, "account/artistSearch.html", {"results": results})
 
 def match_view(request):
     return render (request, 'account/match.html')
