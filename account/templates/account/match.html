@@ -10,47 +10,25 @@
 <body>
 
     <div id="container">
-        <h2 class="title">What do you want to match by?</h2>
-        <div id="artist_search">
-            <h2>Match by Top 5 Artists</h2>
-        </div>
+        <h2>Are you ready?</h2>
         <div id="song_search">
-            <h2>Match by Top 5 Songs</h2>
+            <h2>Match!</h2>
         </div>
     </div>
 </body>
 <script>
-    let artistSearchContainer = document.getElementById('artist_search')
     let songSearchContainer = document.getElementById('song_search')
 
     //add event listener click to lead to other pages 
-    function animateWithEvent(element, removedElement, animationClass) {
+    function animateWithEvent(element, animationClass) {
         return new Promise((resolve) => {
             element.style.background = 'rgb(152, 69, 152)'
-            removedElement.style.display = 'none';
             element.classList.toggle(animationClass);
             element.addEventListener('transitionend', () => {
                 resolve();
             }, { once: true});
         });
     }
-
-
-    artistSearchContainer.addEventListener('click', function() {
-        function artistSearchTransition() {
-            return new Promise((resolve) => {
-                resolve(window.location.replace("/account/artistSearch"));
-            });
-            
-        }        
-        async function sequenceArtist(){
-            await animateWithEvent(artistSearchContainer, songSearchContainer, 'active')
-            await artistSearchTransition()
-        }
-
-        sequenceArtist();
-    });
-
     songSearchContainer.addEventListener('click', function() {
         function songSearchTransition() {
             return new Promise((resolve) => {
@@ -58,7 +36,7 @@
             });
         }
         async function sequenceSong(){
-            await animateWithEvent(songSearchContainer, artistSearchContainer, 'active');
+            await animateWithEvent(songSearchContainer, 'active');
             await songSearchTransition();
         }
 
