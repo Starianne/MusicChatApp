@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'css/stylesheet.css' %}">
+    <!-- add a script tag here for when you add javascript into the static folder-->
+</head>
+<body>
+<h2>Finding someone who listens to the same stuff as you</h2>
+<div class="spinner"><p>this will spin later</p></div>
+</body>
+<script>
+    async function checkMatch() {
+        const result = await fetch ("/chat/check_match/");
+        const data = await result.json();
+
+        if (data.matched) {
+            window.location.href = `/chat/${data.room}/`;
+        }
+    }
+
+    setInterval(checkMatch, 1000);
+</script>
+</html>

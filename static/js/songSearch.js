@@ -120,6 +120,7 @@ async function submit() {
             i.querySelector(".selectedSongArtist").innerText="";
             i.querySelector(".selectedItemImg").src="";
             storeSong();
+            window.location.href = '/chat/find/'
         }
 
     } else {
