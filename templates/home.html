@@ -1,12 +1,39 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        home
+    </title>
+    <link rel="stylesheet" href="{% static 'css/menu.css' %}">
+    <!-- add a script tag here for when you add javascript into the static folder-->
+</head>
+<body>
+<div class="logo">
+    <img src="static/img/musichatlogo.svg"/>
+</div>
 
-{% block title %}
-    Home
-{% endblock %}
+<div class="homeMenu">
+    <div class="card">
+        <h2>chats</h2>
+        <div class="menuChat"></div>
+        <div class="menuChat"></div>
+        <div class="menuChat"></div>
+        <button class="menu">see more</button>
+    </div>
 
-{% block content %}
-    <h1> This is your Home page:</h1>
-    <p> this will have content later </p>
 
-    <button onclick="window.location.href = '/account/match/'">find a match!</button>
-{% endblock %} 
+    <div class="card matchNewMenu">
+        <h2>find someone new?</h2>
+        <button class="menu" onclick="window.location.href = '/account/match/'">let's go!</button>
+    </div>
+
+    <div class="card addUserMenu">
+        <h2>add user:</h2>
+        <input type="userSearch" placeholder="search for user...">
+    </div>
+</div>
+</body>
+</html>

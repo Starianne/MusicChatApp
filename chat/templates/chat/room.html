@@ -10,25 +10,26 @@
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
-    {{ room_name|json_script:"room-name" }}
+    {{ room_name|json_script:"chat-id" }}
     <script>
-        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        const roomName = JSON.parse(document.getElementById('chat-id').textContent);
 
         const chatSocket = new WebSocket(
             'ws://'
             + window.location.host
             + '/ws/chat/'
-            + roomName
+            + chatId
             + '/'
         );
 
+        //display messages
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             document.querySelector('#chat-log').value += (data.username + '\n' + data.message + '\n');
         };
 
         chatSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
+            console.error('Chat finished');
         };
 
         document.querySelector('#chat-message-input').focus();
