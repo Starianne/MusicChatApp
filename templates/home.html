@@ -11,8 +11,13 @@
     <!-- add a script tag here for when you add javascript into the static folder-->
 </head>
 <body>
-<div class="logo">
-    <img src="static/img/musichatlogo.svg"/>
+<div class="logoContainer">
+    <div class="logo">
+        <h1>musichat</h1><h1 id="dot">.</h1><h1>net&nbsp;</h1>
+    </div>
+    <div class="userGreeting">
+        <h1>Hello</h1><h1 id="comma">,&nbsp;&nbsp;</h1><h1>{{request.user}}</h1>
+    </div>
 </div>
 
 <div class="homeMenu">
