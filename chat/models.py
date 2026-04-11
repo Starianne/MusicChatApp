@@ -54,8 +54,6 @@ class Message(models.Model):
 class Match(models.Model):
     user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="match_user1")
     user2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name="match_user2")
-
-    room_name = models.CharField(max_length=100, unique=True)
     chat = models.OneToOneField(Chat, null=True, blank=True, on_delete=models.SET_NULL, related_name="match")
 
     created_at = models.DateTimeField(auto_now_add=True)

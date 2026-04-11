@@ -181,7 +181,7 @@ for (let item of searchList) {
     })
 };
 
-
+//update selected items with stored items on refreshes
 
 for (let i = 0; i < storedItems.length && i< selectedItems.length; i++) {
     selectedItems[i].id = storedItems[i].songId

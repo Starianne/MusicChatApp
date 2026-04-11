@@ -23,7 +23,7 @@ h1 {
 
 /* LOGO */
 .logoContainer{
-    width: 99vw;
+    width: 90vw;
     margin-top:20px;
     display: flex;
     justify-content: space-between;
@@ -85,4 +85,14 @@ button.menu{
     padding:12px 24px;
     border-radius:20px;
     color:#00C6CF;
+}
+
+.quoteImg{
+    float: right;
+    overflow: hidden;
+}
+
+.arrowImg{
+    padding-left: 10vw;
+    overflow: hidden;
 }

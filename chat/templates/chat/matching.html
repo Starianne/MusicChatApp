@@ -20,7 +20,7 @@
         const data = await result.json();
 
         if (data.matched) {
-            window.location.href = `/chat/${data.room}/`;
+            window.location.href = `/chat/${data.chat_id}/`;
         }
     }
 

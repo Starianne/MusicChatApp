@@ -15,8 +15,8 @@ def index(request):
     return render(request, "chat/index.html")
 
 
-def room(request, room_name):
-    return render(request, "chat/room.html",  {"room_name":room_name})
+def room(request, chat_id):
+    return render(request, "chat/room.html",  {"chat_id": chat_id})
 
 def shared_songs(user_a, user_b):
     songs_a = set(
@@ -30,7 +30,7 @@ def shared_songs(user_a, user_b):
     return len(songs_a.intersection(songs_b))
 
 def find_match(current_user):
-    #error in this function?
+
     blocked_users = UserBlocked.objects.filter(blocker = current_user).values_list("blocked_user_id", flat=True)
     blocked_by_users = UserBlocked.objects.filter(blocked_user = current_user).values_list("blocker_id", flat=True)
 
@@ -52,12 +52,10 @@ def find_match(current_user):
         return None
     
     with transaction.atomic():
-        room_name = f"match_{uuid.uuid4().hex[:10]}"
 
         match = Match.objects.create(
             user1=current_user,
             user2=best_match,
-            room_name=room_name
         )
 
         chat = Chat.objects.create(
@@ -92,20 +90,20 @@ def check_match(request):
     if match:
         print("first match before find")
         print(match)
+        print(match.chat.id)
         return JsonResponse({
             "matched":True,
-            "room":match.room_name,
             "chat_id": match.chat.id,
         })
     
     match = find_match(request.user)
-
+    print(match)
     if match:
         print("second match before find")
         print(match)
+        print(match.chat.id)
         return JsonResponse({
             "matched":True,
-            "room":match.room_name,
             "chat_id": match.chat.id,
         })
     

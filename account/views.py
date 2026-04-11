@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from dotenv import load_dotenv
 from .models import Song, UserTopSongs
+from .decorators import unauthenticated_only
 
 import requests
 import json
@@ -13,7 +14,7 @@ load_dotenv()
 
 
 
-
+@unauthenticated_only
 def accountpage(request):
     return render (request, "account/account.html")
 
@@ -25,7 +26,7 @@ def register_view(request):
             new_user = form.save() #makes user in database
             new_user = authenticate(username=form.cleaned_data["username"], password=form.cleaned_data["password1"])
             login(request, new_user)
-            return redirect('/account/match') #change this to match later
+            return redirect('/account/match') 
         
     context = {'form':form} 
     return render (request, "account/register.html", context)
