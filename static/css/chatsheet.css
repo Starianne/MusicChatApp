@@ -1,0 +1,46 @@
+@font-face {
+    font-family: "Angular";
+    src: url(/static/font/DelaGothicOne-Regular.ttf) format("truetype");
+}
+
+* {
+    font-family: 'Angular';
+}
+
+.page{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+body{
+    background-color: #1c1c1c;
+}
+
+h1, h2 {
+    color: #ffffff;
+}
+
+#chatlog {
+    height: 400px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    max-width: 60%;
+    padding: 8px 12px;
+    border-radius: 12px;
+    margin: 4px;
+}
+
+.sent {
+    background-color: #dcf8c6;
+    margin-left: auto;
+}
+
+.received {
+    background-color: #f1f1f1;
+    margin-right: auto;
+}

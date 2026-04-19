@@ -1,18 +1,57 @@
-<!-- Using tutorial code so that I can figure out how to do this on my own-->
- <!-- chat/templates/chat/room.html -->
-{% extends 'layout.html' %}
-
-{% block title %}
-    Chat Room
-{% endblock %}
-
-{% block content %}
-    <textarea id="chat-log" cols="100" rows="20"></textarea><br>
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/chatsheet.css' %}">
+    <!-- add a script tag here for when you add javascript into the static folder-->
+</head>
+<body>
+<div id="nav">
+    <div id="home">
+        <img src="/static/img/home.svg"/>
+        <h2>go home</h2>
+    </div>
+    <div id="newChat">
+        <img src="static/img/plus.svg"/>
+        <h2>add new chat</h2>
+    </div>
+</div>
+<div id="chatnav">
+    <div id="profileInfo">
+        <img src="/static/img/selectedimg.svg"/>
+        <h2 id="username"></h2>
+    </div>
+    <div id="chatoptions">
+        <img src="/static/img/threedots.svg"/>
+    </div>
+</div>
+<div id="chatlist">
+    <!--add all rooms that user is part of-->
+</div>
+<div id="currentchat">
+    <!--write oldmessages into room-->
+    <div id="chatlog">
+        {% for message in messages %}
+            {% if message.sender.username == current_user %}
+                <div class="message sent"> <!-- sets 2 separate classes-->
+                    <p><strong>{{message.sender.username}}</strong>: {{message.content}}</p>
+                </div>
+            {%else %}
+                <div class="message received">
+                    <p><strong>{{message.sender.username}}</strong>: {{message.content}}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
     {{ chat_id|json_script:"chat-id" }}
+</div>
     <script>
         const chatId = JSON.parse(document.getElementById('chat-id').textContent);
+        const currentUser = "{{ current_user }}";
 
         const chatSocket = new WebSocket(
             'ws://'
@@ -22,10 +61,13 @@
             + '/'
         );
 
-        //display messages
+        //display newly sent messages
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.username + '\n' + data.message + '\n');
+            const chatlog = document.querySelector('#chatlog')
+            const chatUser = data.username === currentUser ? 'sent':'received'; //ternary operator sent if current user, received if not
+            chatlog.innerHTML += `<div class="message ${chatUser}"><p><strong>${data.username}</strong>: ${data.message}</p></div>`;
+            chatlog.scrollTop = chatlog.scrollHeight;
         };
 
         chatSocket.onclose = function(e) {
@@ -46,6 +88,15 @@
                 'message': message 
             }));
             messageInputDom.value = '';
-        };
-    </script>
-{% endblock %}
+        }; 
+        //srolls to bottom on load
+        window.onload = function() {
+            const messages = document.querySelectorAll('#chatlog p'); 
+            const lastMessage = messages[messages.length - 1];
+            if (lastMessage) {
+                lastMessage.scrollIntoView();
+            }
+        }
+    </script>    
+</body>
+</html>

@@ -120,7 +120,7 @@ async function submit() {
             i.querySelector(".selectedSongArtist").innerText="";
             i.querySelector(".selectedItemImg").src="";
             storeSong();
-            window.location.href = '/chat/find/'
+            window.location.href = '/chat/matching/'
         }
 
     } else {
@@ -148,7 +148,6 @@ for (let i of selectedItems) {
 }
 //send data to model + do same on artist
 
-//fix two functions under then fix artist
 
 for (let item of searchList) {
     item.addEventListener("click", function() {

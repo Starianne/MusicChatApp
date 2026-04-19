@@ -1,26 +1,40 @@
-<!-- chat/templates/chat/index.html -->
-{% extends 'layout.html' %}
-
-{% block title %}
-Chat Rooms
-{% endblock %}
-
-{% block content %}
-     What chat room would you like to enter?<br>
-    <input id="room-name-input" type="text" size="100"><br>
-    <input id="room-name-submit" type="button" value="Enter">
-
-    <script>
-        document.querySelector('#room-name-input').focus();
-        document.querySelector('#room-name-input').onkeyup = function(e) {
-            if (e.key === 'Enter') {  // enter, return
-                document.querySelector('#room-name-submit').click();
-            }
-        };
-
-        document.querySelector('#room-name-submit').onclick = function(e) {
-            var roomName = document.querySelector('#room-name-input').value;
-            window.location.pathname = '/chat/' + roomName + '/';
-        };
-    </script>
-{% endblock %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'css/chatsheet.css' %}">
+    <!-- add a script tag here for when you add javascript into the static folder-->
+</head>
+<body>
+<div id="nav">
+    <div id="home">
+        <img src="/static/img/home.svg"/>
+        <h2>go home</h2>
+    </div>
+    <div id="newChat">
+        <img src="static/img/plus.svg"/>
+        <h2>add new chat</h2>
+    </div>
+</div>
+<div id="chatnav">
+    <div id="profileInfo">
+        <img src="/static/img/selectedimg.svg"/>
+        <h2 id="username"></h2>
+    </div>
+    <div id="chatoptions">
+        <img src="/static/img/threedots.svg"/>
+    </div>
+</div>
+<div id="chatlist">
+    <!--add all rooms that user is part of-->
+</div>
+<div id="currentchat">
+<h1>click a chat to start</h1>
+</div>
+</body>
+</html>

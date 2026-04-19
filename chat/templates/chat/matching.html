@@ -16,14 +16,17 @@
 </body>
 <script>
     async function checkMatch() {
-        const result = await fetch ("/chat/check_match/");
+        const result = await fetch ("/chat/load_chat_from_match/");
         const data = await result.json();
+        console.log(data);
 
         if (data.matched) {
             window.location.href = `/chat/${data.chat_id}/`;
+        } else {
+            window.location.href = '/chat/none_found/';
         }
-    }
+    };
 
-    setInterval(checkMatch, 1000);
+    checkMatch();
 </script>
 </html>
