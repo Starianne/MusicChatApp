@@ -19,6 +19,7 @@ body{
 
 h1 {
     color: #ffffff;
+    font-weight: 400;
 }
 
 /* LOGO */
@@ -36,18 +37,11 @@ h1 {
     display: flex;
 }
 
-.userGreeting {
-    align-self: flex-end;
-    display: flex;
-}
 
 #comma {
     color: #00C6CF;
 }
 
-#dot {
-    color: #00C6CF;
-}
 
 
 
@@ -95,4 +89,25 @@ button.menu{
 .arrowImg{
     padding-left: 10vw;
     overflow: hidden;
+}
+
+/*button to register/login */
+
+.linksToSignUp {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10vh;
+}
+
+button {
+    padding: 2vw;
+    background-color: #00C6CF;
+    border-radius: 20px;
+    border: none;
+    color: #ffffff;
+    font-size: xx-large;
+}
+
+button:hover{
+    background-color: #8FEDFF;
 }

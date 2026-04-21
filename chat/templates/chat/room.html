@@ -8,13 +8,14 @@
     <!-- add a script tag here for when you add javascript into the static folder-->
 </head>
 <body>
+<div id="topbar">
 <div id="nav">
     <div id="home">
         <img src="/static/img/home.svg"/>
         <h2>go home</h2>
     </div>
     <div id="newChat">
-        <img src="static/img/plus.svg"/>
+        <img src="/static/img/plus.svg"/>
         <h2>add new chat</h2>
     </div>
 </div>
@@ -27,8 +28,11 @@
         <img src="/static/img/threedots.svg"/>
     </div>
 </div>
+</div>
+<div id="lowerbar">
 <div id="chatlist">
     <!--add all rooms that user is part of-->
+    <h1> chats will be here </h1>
 </div>
 <div id="currentchat">
     <!--write oldmessages into room-->
@@ -48,6 +52,7 @@
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
     {{ chat_id|json_script:"chat-id" }}
+</div>
 </div>
     <script>
         const chatId = JSON.parse(document.getElementById('chat-id').textContent);

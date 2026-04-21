@@ -1,0 +1,105 @@
+@font-face {
+    font-family: "Angular";
+    src: url(/static/font/DelaGothicOne-Regular.ttf) format("truetype");
+}
+
+* {
+    font-family: 'Angular';
+}
+
+
+body{
+    text-align: center;
+    background-color: #1c1c1c;
+    color:rgb(255, 255, 255);
+
+}
+
+p, h1, h2 {
+    text-align:center;
+    color:rgb(255, 255, 255);
+    font-weight: 200;
+}
+
+/* LOGO */
+.logoContainer{
+    width: 90vw;
+    margin-top:20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo {
+    align-self: flex-start;
+    display: flex;
+}
+
+#comma {
+    color: #00C6CF;
+}
+
+#dot {
+    color: #00C6CF;
+}
+
+
+/* actual sign in container */
+
+.signinContainer {
+    background-color: #252525;
+    width: 50vw;
+    justify-self: center;
+    border-radius: 20px;
+}
+
+
+.tabs {
+    display: flex;
+    margin-bottom: 25px;
+    border-bottom: 10px solid #00C6CF;
+}
+
+.registerTab, .loginTab {
+    flex: 1;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 20px;
+    border-radius: 20px 20px 0 0;
+    transition: 0.3s;
+}
+
+.registerTab:hover {
+    background-color: #363636;
+}
+
+.loginTab:hover {
+    background-color: #363636;
+}
+
+
+input {
+    background-color: #1c1c1c;
+    color: #ffffff;
+    border: none;
+    border-radius: 40px;
+    padding: 1vh 2vw;
+    width: 30vw;
+    height: 5vh;
+    margin: 3vh 0;
+}
+
+input::placeholder{
+    color: #888888;
+}
+
+input[type="submit"] {
+    height: 10vh;
+    width: fit-content;
+    border: none;
+    border-radius: 25px;
+    background: #1fc7c9;
+    color: white;
+    font-size: 5vh;
+    cursor: pointer;
+    transition: 0.2s;
+}

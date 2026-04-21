@@ -15,17 +15,69 @@
 
 body{
     background-color: #1c1c1c;
+    height: 90vh;
+    width: auto;
 }
 
 h1, h2 {
     color: #ffffff;
 }
 
+/*top part + nav css*/
+#topbar{
+    display: grid;
+    margin-top: -10px;
+    margin-left: -10px;
+    margin-right: -5px;
+    grid-template-columns: 2fr 3fr;
+}
+
+#nav {
+    height: 6vh;
+    background-color: #292929;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5vw;
+
+}
+
+#home{ 
+    float: left;
+    display: flex;
+}
+
+#newChat{
+    float: left;
+    display: flex;
+}
+
+#chatnav{
+    float: left;
+    justify-content: space-between;
+    display: flex;
+    background-color: #252525;
+    padding: 0.5vw;
+}
+
+/*bottom part of page*/
+
+#lowerbar{
+    display: grid;
+    margin-left: -10px;
+    margin-right: -5px;
+    grid-template-columns: 2fr 3fr;
+    height: 100%;
+    grid-template-rows: 1fr;
+    width: 100vw;
+}
+
+/* Chat message css*/
 #chatlog {
-    height: 400px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    height: 85vh;
+    width: 60vw;
 }
 
 .message {
@@ -33,14 +85,15 @@ h1, h2 {
     padding: 8px 12px;
     border-radius: 12px;
     margin: 4px;
+    overflow-wrap: break-word;
 }
 
 .sent {
-    background-color: #dcf8c6;
+    background-color: #00C6CF;
     margin-left: auto;
 }
 
 .received {
-    background-color: #f1f1f1;
+    background-color: #eeeeee;
     margin-right: auto;
 }

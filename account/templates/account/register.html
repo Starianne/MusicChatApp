@@ -1,60 +1,67 @@
-{% extends 'layout.html' %}
-
-{% block title %}
-    Register
-{% endblock %}
-
-{% block content %}
-<div class="title">
-    <h1> This is the register page:</h1>
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Register
+    </title>
+    <link rel="stylesheet" href="{% static 'css/signin.css' %}">
+    <!-- add a script tag here for when you add javascript into the static folder-->
+</head>
+<body>
+<div class="logoContainer">
+    <div class="logo">
+        <h1>musichat</h1><h1 id="dot">.</h1><h1>net&nbsp;</h1>
+    </div>
 </div>
+<div class='errorBox'>
+    {% for error in form.username.errors %}
+        <p>{{ error }}</p>
+    {% endfor %}
+    {% for error in form.email.errors %}
+        <p>{{ error }}</p>
+    {% endfor %}       
+    {% for error in form.password1.errors %}
+        <p>{{ error }}</p>
+    {% endfor %}
+    {% for error in form.password2.errors %}
+        <p>{{ error }}</p>
+    {% endfor %}    
+    {% for error in form.non_field_errors %}
+        <p>{{ error }}</p>
+    {% endfor %}
+</div>
+<div class="signinContainer">
+    <div class="tabs">
+        <div class="registerTab" style="background-color: #00C6CF;">
+            <h1>register</h1>
+        </div>
+        <div class="loginTab" onclick="window.location.href = '/account/login/'">
+            <h1 style="color: #888888;">login</h1>
+        </div>
+    </div>
+
     <form method='POST' action="">
-        {% csrf_token %}
+    {% csrf_token %}
     <div class='formContainer'>
         <div class='field'>
-            {{ form.username.label }}
-            <br>
             {{ form.username }}
-
         </div>
         <div class='field'>
-            {{ form.email.label }}
-            <br>
             {{ form.email }}
-
         </div>
         <div class='field'>
-            {{ form.password1.label }}
-            <br>
             {{ form.password1 }}
-
         </div>
         <div class='field'>
-            {{ form.password2.label }}
-            <br>
             {{ form.password2 }}
-
-
         </div>
-        <input type="submit" name = "Create User">
+        <input type="submit" name = "Create User" value="register">
     </div>
-
     </form>
-    <div class='errorBox'>
-        {% for error in form.username.errors %}
-            <p>{{ error }}</p>
-        {% endfor %}
-        {% for error in form.email.errors %}
-            <p>{{ error }}</p>
-        {% endfor %}       
-        {% for error in form.password1.errors %}
-            <p>{{ error }}</p>
-        {% endfor %}
-        {% for error in form.password2.errors %}
-            <p>{{ error }}</p>
-        {% endfor %}    
-        {% for error in form.non_field_errors %}
-            <p>{{ error }}</p>
-        {% endfor %}
-    </div>
-{% endblock %}
+</div>
+
+</body>
+</html>

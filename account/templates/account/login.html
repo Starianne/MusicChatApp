@@ -1,23 +1,41 @@
-{% extends 'layout.html' %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Register
+    </title>
+    <link rel="stylesheet" href="{% static 'css/signin.css' %}">
+    <!-- add a script tag here for when you add javascript into the static folder-->
+</head>
+<body>
+<div class="logoContainer">
+    <div class="logo">
+        <h1>musichat</h1><h1 id="dot">.</h1><h1>net&nbsp;</h1>
+    </div>
+</div>
 
-{% block title %}
-    Login
-{% endblock %}
-
-{% block content %}
-<div class="title">
-    <h1> This is the login page:</h1>
-</div>    
-<div class="formContainer">
+<div class="signinContainer">
+    <div class="tabs">
+        <div class="registerTab" onclick="window.location.href = '/account/register/'">
+            <h1 style="color: #888888;">register</h1>
+        </div>
+        <div class="loginTab" style="background-color: #00C6CF;">
+            <h1>login</h1>
+        </div>
+    </div>
     <form method='POST' action=''>
         {% csrf_token %}
+    <div class='formContainer'>
         <input type="username" name = 'username' placeholder="enter username" /> <br>
         <input type="password" name = 'password' placeholder="enter password"/> <br>
         <input type="submit" name = "Login to account">
     </form>
+    </div>
 </div>
-
-
+<div class='errorBox'>
     {% if messages %}
     <ul class="messages">
     {% for message in messages %}
@@ -25,5 +43,6 @@
     {% endfor %}
     </ul>
     {% endif %}
-
-{% endblock %}
+</div>
+</body>
+</html>
