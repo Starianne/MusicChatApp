@@ -12,10 +12,17 @@ class UserBlocked(models.Model):
         unique_together = ("blocker", "blocked_user")
 
 class ChatMember(models.Model):
+    status_types = (
+        ("PENDING", "pending"),
+        ("ACCEPTED", "accepted"),
+        ("REJECTED", "rejected"),
+        )
+    
     chat = models.ForeignKey("Chat", on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=20, default="member")
     joined_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=status_types, default="PENDING")
 
     class Meta:
         unique_together = ("chat", "user")
@@ -25,7 +32,6 @@ class Chat(models.Model):
     is_group = models.BooleanField(default=False)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_chats")
     created_at = models.DateTimeField(auto_now_add=True)
-
     members = models.ManyToManyField(User, through="ChatMember", related_name="chats")
 
 

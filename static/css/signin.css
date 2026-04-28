@@ -88,6 +88,11 @@ input {
     margin: 3vh 0;
 }
 
+input:focus {
+    border: #00C6CF solid 2px;
+    outline: none;
+}
+
 input::placeholder{
     color: #888888;
 }

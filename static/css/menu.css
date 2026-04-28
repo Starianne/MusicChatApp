@@ -30,11 +30,19 @@ h1 {
     justify-content: space-between;
 }
 
+.userGreeting {
+    align-self: flex-end;
+    display: flex;
+}
 
 
 .logo {
     align-self: flex-start;
     display: flex;
+}
+
+#dot {
+    color: #00C6CF;
 }
 
 

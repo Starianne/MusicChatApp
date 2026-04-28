@@ -17,9 +17,12 @@ def index(request):
 
 @login_required
 def room(request, chat_id):
-    #pass chat messages to room
+    #pass chat messages, sender user id and other_members id to room AND CHAT NAME
+    members = list(ChatMember.objects.filter(chat_id = chat_id).values("id", "user_id", "user__username", "role", "status"))
     messages = Message.objects.filter(chat_id=chat_id).select_related("sender").order_by('created_at')
-    return render(request, "chat/room.html",  {"chat_id": chat_id, "messages": messages, "current_user" : request.user.username})
+    chat_name = Chat.objects.get(id = chat_id).name
+    print(f"this is the chatname: {chat_name}")
+    return render(request, "chat/room.html",  {"chat_id": chat_id, "chat_name" : chat_name, "messages": messages, "current_user" : request.user.username, "members" : members})
 
 def none_found_view(request):
     return render(request, "chat/none_found.html")
@@ -89,7 +92,7 @@ def find_match(current_user):
         )
 
         ChatMember.objects.bulk_create([
-            ChatMember(chat=chat, user=current_user),
+            ChatMember(chat=chat, user=current_user, role="admin"),
             ChatMember(chat=chat, user=best_match),
         ])
 
