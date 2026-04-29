@@ -29,6 +29,11 @@ img {
     align-self: center;
 }
 
+button {
+    background-color: #00C6CF;
+    color: white;
+}
+
 /*top part + nav css*/
 #topbar{
     display: grid;
@@ -120,7 +125,18 @@ img {
     width: 100vw;
 }
 
-/* Chat message css*/
+/*empty chat page box*/
+#notChat {
+    font-size: xx-large;
+    align-content: center;
+}
+
+#notChat h1 {
+    justify-self: center;
+    color: #888888;
+}
+
+/* Chat message css */
 #chatlog {
     overflow-y: auto;
     display: flex;
@@ -147,64 +163,105 @@ img {
 }
 
 /* intro messages css */
+/* ok div items */
+#okDiv {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+#modal {
+    background: #1e1e1e;
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 28px 32px;
+    max-width: 320px;
+    width: 90%;
+}
+
+#modal h2 {
+    margin: 0 0 12px;
+    font-size: 1.6rem;
+}
+
+#modal p {
+    margin: 0 0 16px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+#modal p:last-of-type {
+    margin-bottom: 20px;
+}
+
+.modalBtns {
+    display: flex;
+    gap: 12px;
+}
+
+.modalBtns button {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.positive {
+    background-color: #00C6CF;
+    color: white;
+    border: none;
+}
+
+.negative {
+    background-color: #068488;
+    color: white;
+    border: none;
+}
+
 
 .newMessage {
     display: flex;
-    height: fit-content;
-    margin-top: auto;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    height: 100%;
+    color: white;
+    font-family: inherit;
 }
 
-.bigMessage {
-    align-self: flex-start;
-    max-width: fit-content;
-    padding: 8px 12px;
-    border-radius: 12px;
-    margin-left: 2vw;
-    margin-bottom: 3vh;
-    overflow-wrap: break-word;
-    background-color: #252525;
-    color: white;
-    font-size: larger;
+.bigMessage h3 {
+    font-size: 1.4rem;
+    margin: 0;
 }
 
-.smallMessage {
-    align-self: flex-end;
-    max-width: fit-content;
-    padding: 8px 12px;
-    border-radius: 12px;
-    margin-right: 2vw;
-    margin-bottom: 3vh;
-    overflow-wrap: break-word;
-    background-color: #252525;
-    color: white;
-    font-size: larger;
+.smallMessage h3 {
+    font-size: 1rem;
+    color: #888888;
+    margin: 0;
 }
 
 .dontWantBtn {
-    background-color: #292929;
+    margin-top: 8px;
+    cursor: pointer;
+    background: #2a2a2a;
+    padding: 10px 20px;
+    border-radius: 20px;
     color: #888888;
-    max-width: fit-content;
-    padding: 8px 12px;
-    border-radius: 12px;
-    margin-left: 2vw;
-    margin-bottom: 3vh;
-    transition: 0.3s;
-    align-self: flex-start;
+}
+
+.dontWantBtn h3 {
+    font-size: 0.9rem;
+    margin: 0;
 }
 
 .dontWantBtn:hover {
-    background-color: red;
-    color: #ffffff;
-}
-
-/*accept container */
-
-.acceptContainer {
-    background-color: #252525;
-    border: none;
-    position: absolute;
-    right: 60vw;
+    background: #ff0000;
+    color: #fff;
 }
 
 /* chat list css */
@@ -227,7 +284,7 @@ input {
 
 
 input:focus {
-    border: #00C6CF solid 1px;
+    border: #00C6CF solid 3px;
     outline: none;
 }
 

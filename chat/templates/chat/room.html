@@ -77,13 +77,13 @@
         const dontWantBtn = document.querySelector('.dontWantBtn')
         const members = JSON.parse(document.getElementById('members-data').textContent);
         const memberAmount = members.length
-        console.log(memberAmount)
+        let currentChatUser = null
+
 
         for (member in members) {
-            console.log(members[member]["user__username"]);
-            console.log(members[member].user_id);
-            console.log(members[member].role);
-            console.log(members[member].status);
+            if (members[member]["user__username"] == currentUser) {
+                currentChatUser = members[member]
+            }
         }
 
         if ("{{chat_name}}" == "" && memberAmount == 2) {
@@ -96,6 +96,73 @@
             }
         };
 
+
+        const newMessage = document.querySelector('.newMessage');
+        //new user intro messages
+        if (currentChatUser && currentChatUser.status == "PENDING") {
+            if (currentChatUser.role == "admin") {
+                //if they send a message, hide the intro
+                document.querySelector('#chat-message-input').addEventListener('keyup', function(e) {
+                    if (e.key === 'Enter' && this.value.trim() !== '') {
+                        if (newMessage) newMessage.style.display = 'none';
+                    }
+                });
+
+                //if user presses i dont want to show okdiv
+                dontWantBtn.addEventListener("click", function() {
+                    const okDiv = document.createElement("div");
+                    okDiv.id = "okDiv";
+                    okDiv.innerHTML = `
+                        <div id="modal">
+                            <h2>ok!</h2>
+                            <p>but if you choose to unmatch with this person now, you won't be able to match with them later</p>
+                            <p>is that ok?</p>
+                            <div class="modalBtns">
+                                <button id="confirmUnmatch" class="positive">yeah</button>
+                                <button id="cancelUnmatch" class="negative">nevermind</button>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(okDiv);
+
+                    document.getElementById("cancelUnmatch").addEventListener("click", () => okDiv.remove());
+                    document.getElementById("confirmUnmatch").addEventListener("click", () => {
+                        okDiv.remove();
+                        // send decline request to django
+                    });
+                    okDiv.addEventListener("click", e => {
+                        if (e.target === okDiv) okDiv.remove();
+                    });
+                });
+
+            } else if (currentChatUser.role == "member") {
+                //member never sees intro messages, only the accept/decline
+                if (newMessage) newMessage.style.display = 'none';
+
+                const okDiv = document.createElement("div");
+                okDiv.id = "okDiv";
+                okDiv.innerHTML = `
+                    <div id="modal">
+                        <h2>do you want to accept?</h2>
+                        <p>if you choose to not match with this person now, you won't be able to match with them later</p>
+                        <div class="modalBtns">
+                            <button id="confirmAccept" class="positive">yeah</button>
+                            <button id="cancelAccept" class="negative">no thanks</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(okDiv);
+
+                document.getElementById("confirmAccept").addEventListener("click", () => {
+                    okDiv.remove();
+                    //then send accept request to django
+                });
+                document.getElementById("cancelAccept").addEventListener("click", () => {
+                    okDiv.remove();
+                    //thden send decline request to django
+                });
+            }
+        }
         const chatSocket = new WebSocket(
             'ws://'
             + window.location.host
@@ -132,12 +199,7 @@
             }
         };
 
-        dontWantBtn.addEventListener("click", function() {
-           const acceptContainer = document.createElement("div");
-           acceptContainer.classList.add("acceptContainer");
-           const title = acceptContainer.createElement("h1");
-           title.innerText = "ok!";
-        })
+
 
         //scrolls to bottom on load
         window.onload = function() {
