@@ -8,12 +8,14 @@ from django.db.models import Q
 from django.contrib.auth import get_user_model
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
-
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 CurrentUserModel= get_user_model()
 
 def index(request):
     return render(request, "chat/index.html")
+
 
 @login_required
 def room(request, chat_id):
@@ -178,3 +180,48 @@ def add_member(request, chat_id):
     ChatMember.objects.get_or_create(chat = chat, user = user)
 
     return JsonResponse({"ok" : True})
+
+@login_required
+@require_POST
+#really this is delete chat but oh well
+def leave_chat(request, chat_id):
+    try:
+        #broadcast to all users in the room before deleting
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            f"chat_{chat_id}",
+            {"type": "chat.deleted"}  # dots become underscores — maps to chat_deleted()
+        )
+
+        #delete match first so the onetoone becomes null before chat gets deleted
+        UserBlocked.objects.create
+        Match.objects.filter(chat_id=chat_id).delete()
+        Chat.objects.filter(id=chat_id).delete()
+
+        return JsonResponse({"status": "ok"})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)}, status=400)
+
+@login_required
+@require_POST
+def accept_chat(request, chat_id):
+    try:
+        #update member status
+        member = ChatMember.objects.get(chat_id=chat_id, user=request.user)
+        member.status = "ACCEPTED"
+        member.save()
+
+        #update admin status to stop pending lock
+        
+        ChatMember.objects.filter(chat_id=chat_id, role="admin").update(status="ACCEPTED")
+        
+        #let everyone know that chat was accepted
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            f"chat_{chat_id}",
+            {"type": "chat.accepted"}
+        )
+        return JsonResponse({"status": "ok"})
+    
+    except ChatMember.DoesNotExist:
+        return JsonResponse({"status": "error", "message": "member not found"}, status=404)

@@ -127,14 +127,21 @@
 
                     document.getElementById("cancelUnmatch").addEventListener("click", () => okDiv.remove());
                     document.getElementById("confirmUnmatch").addEventListener("click", () => {
-                        okDiv.remove();
-                        // send decline request to django
-                    });
-                    okDiv.addEventListener("click", e => {
-                        if (e.target === okDiv) okDiv.remove();
+                        fetch(`/chat/${chatId}/leave/`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}',
+                                'Content-Type': 'application/json',
+                            },
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === 'ok') {
+                                window.location.href = '/chat/';
+                            }
+                        });
                     });
                 });
-
             } else if (currentChatUser.role == "member") {
                 //member never sees intro messages, only the accept/decline
                 if (newMessage) newMessage.style.display = 'none';
@@ -154,12 +161,35 @@
                 document.body.appendChild(okDiv);
 
                 document.getElementById("confirmAccept").addEventListener("click", () => {
-                    okDiv.remove();
-                    //then send accept request to django
+                    fetch(`/chat/${chatId}/accept/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'ok') {
+                            okDiv.remove();
+                        }
+                    });
                 });
+
                 document.getElementById("cancelAccept").addEventListener("click", () => {
-                    okDiv.remove();
-                    //thden send decline request to django
+                    fetch(`/chat/${chatId}/leave/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'ok') {
+                            window.location.href = '/chat/';
+                        }
+                    });
                 });
             }
         }
@@ -174,6 +204,24 @@
         //display newly sent messages
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
+
+            //if chat was deleted redirect everyone still in room
+            if (data.type === 'chat_deleted') {
+                window.location.href = '/chat/';
+                return;
+            }
+
+            //when member accepts, get rid of the ok divs
+            if (data.type === 'chat_accepted') {
+                const okDiv = document.getElementById('okDiv');
+                if (okDiv) okDiv.remove();
+                const newMsg = document.querySelector('.newMessage');
+                if (newMsg) newMsg.style.display = 'none';
+                return;
+            }
+
+
+
             const chatlog = document.querySelector('#chatlog')
             const chatUser = data.username === currentUser ? 'sent':'received'; //ternary operator sent if current user, received if not
             chatlog.innerHTML += `<div class="message ${chatUser}"><p><strong>${data.username}</strong>: ${data.message}</p></div>`;
