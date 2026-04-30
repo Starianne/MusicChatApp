@@ -10,4 +10,5 @@ urlpatterns = [
     path("<int:chat_id>/accept/", views.accept_chat, name="accept_chat"),
     path("none_found/", views.none_found_view, name="none_found"),
     path("matching/", views.matching_view, name="matching"),
+    path("my_chats/", views.my_chats, name="my_chats"),
 ]

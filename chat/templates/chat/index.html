@@ -29,10 +29,70 @@
 <div id="lowerbar">
 <div id="chatlist">
     <!--add all rooms that user is part of-->
-    <h1> chats will be here </h1>
+    <div id="pendingSection"></div>
+    <div id="acceptedChats"></div>
 </div>
 <div id="notChat">
     <h1> click a chat to start </h1>
 </div>
 </body>
+<script>
+        //sidebar chats
+        //grab chat list
+        fetch('/chat/my_chats/', {
+            headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+        })
+        .then(res => res.json())
+        .then(data => {
+            const pendingSection = document.getElementById('pendingSection');
+            const acceptedChats = document.getElementById('acceptedChats');
+
+            //add pending chats
+            if (data.pending.length > 0) {
+                const requestItem = document.createElement('div');
+                requestItem.classList.add('chatItem', 'requestItem');
+                requestItem.innerHTML = `
+                    <div id="requestHeader">
+                        <span id="requestCount">${data.pending.length}</span>
+                        <span>new request</span>
+                        <span id="requestPlus">+</span>
+                    </div>
+                    <div id="requestList" style="display:none;"></div>
+                `;
+                pendingSection.appendChild(requestItem);
+
+                const requestList = requestItem.querySelector('#requestList');
+                data.pending.forEach(chat => {
+                    const item = document.createElement('div');
+                    item.classList.add('chatItem');
+                    item.textContent = chat.name;
+                    item.addEventListener('click', () => {
+                        window.location.href = `/chat/${chat.chat_id}/`;
+                    });
+                    requestList.appendChild(item);
+                });
+
+                //toggle expand
+                requestItem.querySelector('#requestHeader').addEventListener('click', () => {
+                    const isOpen = requestList.style.display !== 'none';
+                    requestList.style.display = isOpen ? 'none' : 'block';
+                    requestItem.querySelector('#requestPlus').textContent = isOpen ? '+' : '−';
+                });
+            }
+
+            //add accepted chats
+            data.accepted.forEach(chat => {
+                const item = document.createElement('div');
+                item.classList.add('chatItem');
+                item.textContent = chat.name;
+                // Highlight current chat
+                if (typeof chatId != 'undefined' && chat.chat_id === chatId) item.classList.add('activeChat');
+                item.addEventListener('click', () => {
+                    window.location.href = `/chat/${chat.chat_id}/`;
+                });
+                acceptedChats.appendChild(item);
+            });
+        });
+
+</script>
 </html>

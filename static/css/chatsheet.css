@@ -164,6 +164,57 @@ button {
     margin-right: auto;
 }
 
+/* block user css */
+#blockUserDiv {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 320px;
+    background: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    align-items: center;
+    padding: 24px;
+    gap: 20px;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+#closeBlockBtn {    align-self: flex-end;
+    cursor: pointer;
+}
+
+#closeBlockBtn:hover {
+    fill: #ff0000;
+}
+
+#blockUserDiv h1 {
+    font-size: 1.4rem;
+    margin: 0;
+    color: white;
+}
+
+#blockBtn {
+    background: #2F2E2E;
+    color: #888888;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.2s;
+    margin-bottom: 2vh;
+}
+
+#blockBtn:hover {
+    background: #ff0000;
+    color: white;
+}
+
 /* intro messages css */
 /* ok div items */
 #okDiv {
@@ -270,7 +321,73 @@ button {
 
 #chatlist {
     background-color: #252525;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+    overflow-y: auto;
 }
+
+.chatItem {
+    background: #1e1e1e;
+    border-radius: 20px;
+    padding: 16px 20px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.chatItem:hover {
+    background: #2a2a2a;
+}
+
+.activeChat {
+    outline: 2px solid #ccc;
+}
+
+.requestItem {
+    outline: 2px solid #00bfb3;
+}
+
+#requestHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#requestCount {
+    background: #00bfb3;
+    color: white;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+#requestPlus {
+    margin-left: auto;
+    font-size: 1.4rem;
+}
+
+#requestList {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#requestList .chatItem {
+    background: #2a2a2a;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+}
+
 
 input {
     background-color: #252525;

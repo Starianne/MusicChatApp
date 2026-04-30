@@ -17,15 +17,17 @@
     </div>
     <div class="userGreeting">
         <h1>Hello</h1><h1 id="comma">,&nbsp;&nbsp;</h1><h1>{{request.user}}</h1>
+        <a href="/account/logout/"><button id="logoutBtn">logout?</button></a>
     </div>
+    
 </div>
 
 <div class="homeMenu">
     <div class="card">
         <h2>chats</h2>
-        <div class="menuChat"></div>
-        <div class="menuChat"></div>
-        <div class="menuChat"></div>
+        <div id="chatPreviewList">
+            <!--filled by js-->
+        </div>
         <button class="menu" onclick="window.location.href='/chat/'">see more</button>
     </div>
 
@@ -37,8 +39,43 @@
 
     <div class="card addUserMenu">
         <h2>add user:</h2>
-        <input type="userSearch" placeholder="search for user...">
+        <div id="searchWrapper">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="userSearch" placeholder="search for user...">
+        </div>
     </div>
 </div>
 </body>
+
+<script>
+        fetch('/chat/my_chats/', {
+        headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+    })
+    .then(res => res.json())
+    .then(data => {
+        const list = document.getElementById('chatPreviewList');
+        const chats = data.accepted.slice(0, 3); //show max 3 on home
+ 
+        if (chats.length === 0) {
+            list.innerHTML = `<p id="noChats">no chats yet — find someone new!</p>`;
+            return;
+        }
+ 
+        chats.forEach(chat => {
+            const item = document.createElement('div');
+            item.classList.add('chatPreview');
+            item.innerHTML = `
+                <span class="previewName">${chat.name}</span>
+                <span class="previewMsg">${chat.last_message ? chat.last_message : 'no messages yet'}</span>
+            `;
+            item.addEventListener('click', () => {
+                window.location.href = `/chat/${chat.chat_id}/`;
+            });
+            list.appendChild(item);
+        });
+    });
+</script>
 </html>

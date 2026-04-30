@@ -246,3 +246,41 @@ def accept_chat(request, chat_id):
     
     except ChatMember.DoesNotExist:
         return JsonResponse({"status": "error", "message": "member not found"}, status=404)
+    
+
+#to display chat data
+@login_required
+def my_chats(request):
+    #get chats + status
+    memberships = ChatMember.objects.filter(
+        user=request.user
+    ).select_related("chat").order_by("-chat__created_at")
+
+    accepted = []
+    pending = []
+
+    for m in memberships:
+        chat = m.chat
+        #get other user name for dms
+        other_member = ChatMember.objects.filter(
+            chat=chat
+        ).exclude(user=request.user).select_related("user").first()
+
+        last_message = Message.objects.filter(
+            chat=chat
+        ).order_by("-created_at").first()
+
+        #fall back names incase there is so gc name or other user
+        chat_data = {
+            "chat_id": chat.id,
+            "name": chat.name if chat.name else (other_member.user.username if other_member else "chat"),
+            "is_group": chat.is_group,
+            "last_message": last_message.content if last_message else None,
+        }
+
+        if m.status == "PENDING" and m.role == "member":
+            pending.append(chat_data)
+        elif m.status == "ACCEPTED":
+            accepted.append(chat_data)
+
+    return JsonResponse({"accepted": accepted, "pending": pending})
