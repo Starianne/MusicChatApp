@@ -183,20 +183,41 @@ def add_member(request, chat_id):
 
 @login_required
 @require_POST
-#really this is delete chat but oh well
 def leave_chat(request, chat_id):
     try:
-        #broadcast to all users in the room before deleting
-        channel_layer = get_channel_layer()
-        async_to_sync(channel_layer.group_send)(
-            f"chat_{chat_id}",
-            {"type": "chat.deleted"}  # dots become underscores — maps to chat_deleted()
-        )
+        member_count = ChatMember.objects.filter(chat_id=chat_id).count()
 
-        #delete match first so the onetoone becomes null before chat gets deleted
-        UserBlocked.objects.create
-        Match.objects.filter(chat_id=chat_id).delete()
-        Chat.objects.filter(id=chat_id).delete()
+        if member_count <= 2:
+            #get other user to block
+            other_member = ChatMember.objects.filter(
+                chat_id=chat_id
+            ).exclude(user=request.user).first()
+
+            if other_member:
+                #block both ways so neither match
+                UserBlocked.objects.get_or_create(
+                    blocker=request.user,
+                    blocked_user=other_member.user
+                )
+                UserBlocked.objects.get_or_create(
+                    blocker=other_member.user,
+                    blocked_user=request.user
+                )
+
+            #broadcast to all users in the room before deleting
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                f"chat_{chat_id}",
+                {"type": "chat.deleted"} #dots become underscores - maps to chat_deleted()
+            )
+
+            #delete match first so the onetoone becomes null before chat gets deleted
+            Match.objects.filter(chat_id=chat_id).delete()
+            Chat.objects.filter(id=chat_id).delete()
+
+        else:
+            #remove from groupchat
+            ChatMember.objects.filter(chat_id=chat_id, user=request.user).delete()
 
         return JsonResponse({"status": "ok"})
     except Exception as e:

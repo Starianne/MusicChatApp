@@ -251,11 +251,8 @@
 
         //scrolls to bottom on load
         window.onload = function() {
-            const messages = document.querySelectorAll('#chatlog p'); 
-            const lastMessage = messages[messages.length - 1];
-            if (lastMessage) {
-                lastMessage.scrollIntoView();
-            }
+            const chatlog = document.querySelector('#chatlog');
+            chatlog.scrollTop = chatlog.scrollHeight;
         };
     </script>    
 </body>
