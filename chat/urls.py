@@ -11,4 +11,6 @@ urlpatterns = [
     path("none_found/", views.none_found_view, name="none_found"),
     path("matching/", views.matching_view, name="matching"),
     path("my_chats/", views.my_chats, name="my_chats"),
+    path("search_users/", views.search_users, name="search_users"),
+    path("force_match/", views.force_match, name="force_match"),  
 ]

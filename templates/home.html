@@ -40,7 +40,8 @@
     <div class="card addUserMenu">
         <h2>add user:</h2>
         <div id="searchWrapper">
-            <input type="userSearch" placeholder="search for user...">
+            <input id="userSearch" type="userSearch" placeholder="search for user...">
+            <ul id="searchDropdown"></ul>
         </div>
     </div>
 </div>
@@ -73,5 +74,73 @@
             list.appendChild(item);
         });
     });
+    //search bar 
+    const searchInput = document.getElementById('userSearch');
+    const dropdown = document.getElementById('searchDropdown');
+    let debounceTimer;
+ 
+    searchInput.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        const query = searchInput.value.trim();
+ 
+        if (query.length === 0) {
+            dropdown.style.display = 'none';
+            dropdown.innerHTML = '';
+            return;
+        }
+ 
+        debounceTimer = setTimeout(() => {
+            fetch(`/chat/search_users/?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+                    dropdown.innerHTML = '';
+ 
+                    if (data.users.length === 0) {
+                        dropdown.innerHTML = `<li class="noResults">no users found</li>`;
+                    } else {
+                        data.users.forEach(user => {
+                            const li = document.createElement('li');
+                            li.classList.add('searchResult');
+                            li.innerHTML = `
+                                <span>${user.username}</span>
+                                <button class="matchBtn" data-id="${user.id}">match</button>
+                            `;
+                            li.querySelector('.matchBtn').addEventListener('click', () => {
+                                forceMatch(user.id, li);
+                            });
+                            dropdown.appendChild(li);
+                        });
+                    }
+ 
+                    dropdown.style.display = 'block';
+                });
+        }, 250);
+    });
+ 
+    document.addEventListener('click', (e) => {
+        if (!document.getElementById('searchWrapper').contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+ 
+    //force match data
+    function forceMatch(userId, listItem) {
+        const btn = listItem.querySelector('.matchBtn');
+        btn.textContent = 'matching…';
+        btn.disabled = true;
+ 
+        fetch('/chat/force_match/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: JSON.stringify({ target_user_id: userId }),
+        })
+        .then(res => res.json())
+        .then(data => {
+            window.location.href = `/chat/${data.chat_id}/`;
+        });
+    }
 </script>
 </html>

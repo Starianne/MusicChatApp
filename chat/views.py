@@ -284,3 +284,68 @@ def my_chats(request):
             accepted.append(chat_data)
 
     return JsonResponse({"accepted": accepted, "pending": pending})
+
+#for searchbar
+@login_required
+def search_users(request):
+    query = request.GET.get("q", "").strip()
+ 
+    if len(query) < 1:
+        return JsonResponse({"users": []})
+ 
+    #exclude people you already know
+    blocked_users = UserBlocked.objects.filter(blocker=request.user).values_list("blocked_user_id", flat=True)
+    blocked_by_users = UserBlocked.objects.filter(blocked_user=request.user).values_list("blocker_id", flat=True)
+    matched_to = Match.objects.filter(user1=request.user).values_list("user2_id", flat=True)
+    matched_by = Match.objects.filter(user2=request.user).values_list("user1_id", flat=True)
+ 
+    excluded = list(blocked_users) + list(blocked_by_users) + list(matched_to) + list(matched_by) + [request.user.id]
+ 
+    users = (
+        CurrentUserModel.objects.filter(username__icontains=query)
+        .exclude(id__in=excluded)
+        .order_by("username")[:5]
+    )
+ 
+    return JsonResponse({
+        "users": [{"id": u.id, "username": u.username} for u in users]
+    })
+ 
+#send user into match after pressing match
+@login_required
+@require_POST
+def force_match(request):
+    data = json.loads(request.body)
+    target_id = data.get("target_user_id")
+ 
+    target_user = CurrentUserModel.objects.get(id=target_id)
+ 
+    #check match doesnt already exist
+    already_matched = Match.objects.filter(
+        Q(user1=request.user, user2=target_user) |
+        Q(user1=target_user, user2=request.user)
+    ).first()
+ 
+    if already_matched:
+        return JsonResponse({"chat_id": already_matched.chat.id})
+ 
+    with transaction.atomic():
+        match = Match.objects.create(
+            user1=request.user,
+            user2=target_user,
+        )
+ 
+        chat = Chat.objects.create(
+            created_by=request.user,
+            is_group=False,
+        )
+ 
+        ChatMember.objects.bulk_create([
+            ChatMember(chat=chat, user=request.user, role="admin", status="ACCEPTED"),
+            ChatMember(chat=chat, user=target_user, status="ACCEPTED"),
+        ])
+ 
+        match.chat = chat
+        match.save(update_fields=["chat"])
+ 
+    return JsonResponse({"chat_id": chat.id})
