@@ -366,7 +366,6 @@ button {
     align-items: center;
     justify-content: center;
     font-size: 0.9rem;
-    font-weight: bold;
     flex-shrink: 0;
 }
 

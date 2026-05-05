@@ -4,16 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{% static 'css/stylesheet.css' %}">
+        <link rel="stylesheet" href="{% static 'css/match.css' %}">
     <title>match</title>
 </head>
 <body>
+    <div class="logoContainer">
+    <div class="logo">
+        <h1>musichat</h1><h1 id="dot">.</h1><h1>net&nbsp;</h1>
+    </div>
+    
+</div>
 
     <div id="container">
-        <h2>Are you ready?</h2>
-        <div id="song_search">
-            <h2>Match!</h2>
+        <div id="readyContainer">
+        <div id="heading">
+        <h2>ready to find your match</h2><h2 id="punctuation">?</h2>
         </div>
+        <div id="song_search">
+            <h2 id="btntxt">lets go!</h2>
+        </div>
+    </div>
     </div>
 </body>
 <script>
@@ -22,7 +32,7 @@
     //add event listener click to lead to other pages 
     function animateWithEvent(element, animationClass) {
         return new Promise((resolve) => {
-            element.style.background = 'rgb(152, 69, 152)'
+            element.style.background = '#00C6CF'
             element.classList.toggle(animationClass);
             element.addEventListener('transitionend', () => {
                 resolve();

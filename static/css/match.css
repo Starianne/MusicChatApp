@@ -1,0 +1,260 @@
+@font-face {
+    font-family: "Angular";
+    src: url(/static/font/DelaGothicOne-Regular.ttf) format("truetype");
+}
+
+* {
+    font-family: 'Angular';
+    font-weight: 400;
+}
+
+body{
+    background-color: #1c1c1c;
+}
+
+h1 {
+    color: #ffffff;
+    font-weight: 400;
+}
+
+h2{
+    color: #ffffff;
+    font-size: x-large;
+}
+
+/* LOGO */
+.logoContainer{
+    width: 90vw;
+    margin-top:20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo {
+    align-self: flex-start;
+    display: flex;
+}
+
+#dot {
+    color: #00C6CF;
+}
+
+/*button css*/
+
+#heading {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    margin-bottom: 4vh;
+}
+
+#heading h2 {
+    font-size: 50px;
+}
+
+/*button css*/
+#song_search {
+    width: fit-content;
+    padding: 3vh 5vw;
+    background: #323232;
+    color: #888888;
+    border-radius: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s ease;
+    cursor: pointer;
+}
+
+#song_search:hover {
+    background-color: #00C6CF;
+    color: #ffffff;
+}
+
+#song_search:hover #btntxt {
+    color: #ffffff;
+}
+
+#btntxt {
+    font-size: 9vh;
+    color: #888888;
+}
+
+
+#readyContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#punctuation {
+    color: #00C6CF;
+}
+
+#container {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex: 1;
+}
+
+#matchingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+}
+
+#matchedState {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+#matchedtxt {
+    color: #ffffff;
+    font-size: 60px;
+}
+
+#matchedBtn {
+    background-color: #00C6CF;
+    cursor: pointer;
+    border-radius: 30px;
+    border: none;
+    padding: 2vh 2vw;
+    color: #ffffff;
+    font-size: 50px;
+    transition: 200ms;
+    margin-top: 6vh;
+}
+
+#matchedBtn:hover {
+    background-color: #ffffff;
+    color: #00C6CF;
+}
+
+#noneContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+}
+
+
+#loadingtxt {
+    font-size: 50px;
+}
+
+/*loading animation*/
+
+.loading{
+    margin-top: 20vh;
+    position: relative;
+    width: 40px;
+    height: 40px;
+    transform:rotate(45deg);
+    animation:loading-ani1 5s ease-in-out infinite;
+}
+.loading i{
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    border-radius: 50%;
+    position:absolute;
+
+}
+.loading i:nth-child(1){
+    background: #00C6CF;
+    transform:translate(0,50px);
+    animation:loading-ani2 5s ease-in-out infinite;
+}
+.loading i:nth-child(2){
+    background: #068488;
+    transform:rotate(90deg) translate(0,50px);
+    animation:loading-ani3 5s ease-in-out infinite;
+}
+.loading i:nth-child(3){
+    background: #ffffff;
+    transform:rotate(180deg) translate(0,50px);
+    animation:loading-ani4 5s ease-in-out infinite;
+}
+.loading i:nth-child(4){
+    background: #8FEDFF;
+    transform:rotate(270deg) translate(0,50px);
+    animation:loading-ani5 5s ease-in-out infinite;
+}
+
+/*rotating*/
+@keyframes loading-ani1{
+    25%{
+        transform:rotate(135deg);
+    }
+    50%{
+        transform:rotate(225deg);
+    }
+    75%{
+        transform:rotate(315deg);
+    }
+    100%{
+        transform:rotate(405deg);
+    }
+}
+/*pulse first ball*/
+@keyframes loading-ani2{
+    17.5%,25%,42.5%,50%,67.5%,75%,92.5%,100%{
+        transform:translate(0,50px);
+    }
+    11%,36%,61%,86%{
+        transform:translate(0,35px);
+    }
+    /*out*/
+    15%,40%,65%,90%{
+        transform: translate(0, 58px); 
+    }
+}
+
+/*pulse second ball*/
+@keyframes loading-ani3{
+    17.5%,25%,42.5%,50%,67.5%,75%,92.5%,100%{
+        transform:rotate(90deg) translate(0,50px);
+    }
+    11%,36%,61%,86%{
+        transform:rotate(90deg) translate(0,35px);
+    }
+    /*out*/
+    15%,40%,65%,90%{
+        transform:rotate(90deg) translate(0, 58px); 
+    }
+}
+
+/*pulse third ball*/
+@keyframes loading-ani4{
+    17.5%,25%,42.5%,50%,67.5%,75%,92.5%,100%{
+        transform:rotate(180deg) translate(0,50px);
+    }
+    11%,36%,61%,86%{
+        transform:rotate(180deg) translate(0,35px);
+    }
+    /*out*/
+    15%,40%,65%,90%{
+        transform:rotate(180deg) translate(0, 58px); 
+    }
+}
+
+/*pulse fourth ball*/
+@keyframes loading-ani5{
+    17.5%,25%,42.5%,50%,67.5%,75%,92.5%,100%{
+        transform:rotate(270deg) translate(0,50px);
+    }
+    11%,36%,61%,86%{
+        transform:rotate(270deg) translate(0,35px);
+    }
+    /*out*/
+    15%,40%,65%,90%{
+        transform:rotate(270deg) translate(0, 58px); 
+    }
+}

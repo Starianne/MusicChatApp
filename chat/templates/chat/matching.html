@@ -7,26 +7,52 @@
     <title>
         {% block title %}{% endblock %}
     </title>
-    <link rel="stylesheet" href="{% static 'css/stylesheet.css' %}">
+    <link rel="stylesheet" href="{% static 'css/match.css' %}">
     <!-- add a script tag here for when you add javascript into the static folder-->
 </head>
 <body>
-<h2>Finding someone who listens to the same stuff as you</h2>
-<div class="spinner"><p>this will spin later</p></div>
+<div class="logoContainer">
+    <div class="logo">
+        <h1>musichat</h1><h1 id="dot">.</h1><h1>net&nbsp;</h1>
+    </div>
+</div>
+<div id="matchingContainer">
+    <div id="loadingState">
+        <h2 id="loadingtxt">we're looking</h2>
+        <div class="loading"><i></i><i></i><i></i><i></i></div>
+    </div>
+    <div id="matchedState">
+        <h2 id="matchedtxt">we found a match<span id="punctuation">!</span></h2>
+            <button id="matchedBtn" onclick="goToChat()">go say hi</button>
+    </div>
+</div>
 </body>
 <script>
-    async function checkMatch() {
-        const result = await fetch ("/chat/load_chat_from_match/");
-        const data = await result.json();
-        console.log(data);
+let chatId = null;
 
-        if (data.matched) {
-            window.location.href = `/chat/${data.chat_id}/`;
-        } else {
-            window.location.href = '/chat/none_found/';
-        }
-    };
 
-    checkMatch();
+async function checkMatch() {
+    const result = await fetch("/chat/load_chat_from_match/");
+    const data = await result.json();
+
+    //display chatbutton if match, else redirect to none_found
+    if (data.matched) {
+        chatId = data.chat_id;
+        showMatched();
+    } else {
+        window.location.href = '/chat/none_found/';
+    }
+}
+
+function showMatched() {
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('matchedState').style.display = 'flex';
+}
+
+function goToChat() {
+    window.location.href = `/chat/${chatId}/`;
+}
+
+checkMatch();
 </script>
 </html>

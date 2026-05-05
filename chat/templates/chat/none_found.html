@@ -7,10 +7,19 @@
     <title>
         none found
     </title>
-    <link rel="stylesheet" href="{% static 'css/stylesheet.css' %}">
+    <link rel="stylesheet" href="{% static 'css/match.css' %}">
     <!-- add a script tag here for when you add javascript into the static folder-->
 </head>
 <body>
-<h1>no one matched sorry :[</h1>
+<div class="logoContainer">
+    <div class="logo">
+        <h1>musichat</h1><h1 id="dot">.</h1><h1>net&nbsp;</h1>
+    </div>
+</div>
+<div id="noneContainer">
+    <h1>sorry <span id="punctuation">-</span> we couldn<span id="punctuation">'</span>t find a match</h1>
+    <h1>try add someone from the homepage<span id="punctuation">?</span></h1>
+    <button id="matchedBtn" onclick="window.location.href = '/'">lets go</button>
+</div>
 </body>
 </html>

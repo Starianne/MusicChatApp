@@ -4,7 +4,7 @@ from django.conf import settings
     
 class Song(models.Model):
     name = models.CharField(max_length=200)
-    deezer_id = models.IntegerField(unique=True)
+    deezer_id = models.BigIntegerField(unique=True)
     album_art = models.URLField(blank=True)
     artist =  models.CharField(max_length=200)   
 

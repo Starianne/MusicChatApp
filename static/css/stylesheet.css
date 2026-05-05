@@ -5,6 +5,7 @@
 
 * {
     font-family: 'Angular';
+    font-weight: 400;
 }
 
 button {
@@ -22,69 +23,24 @@ p, h1, h2 {
     color:rgb(255, 255, 255);
 }
 
-#container {
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     justify-content: center;
-     min-height: 100vh;
-     gap: 10vh; /*space between artist_search and song_search*/
+/* LOGO */
+.logoContainer{
+    width: 90vw;
+    margin-top:20px;
+    display: flex;
+    justify-content: space-between;
 }
 
-.title{
-    border: outset 2px rgba(255, 255, 255,0.2);
-    border-radius: 20px;
-    box-shadow: 
-    2px 2px 6px 0 rgba(0, 0, 0, 0.25),
-    -2px -2px 8px 0 rgba(255, 255, 255, 0.25);
-    background: linear-gradient(-45deg, rgba(0,0,0,0.22), rgba(142, 141, 141, 0.15));
-    margin-bottom: 3.5vh;
-    padding: 20px;
+.logo {
+    align-self: flex-start;
+    display: flex;
 }
 
-.formContainer {
-    border: outset 2px rgba(255, 255, 255,0.2);
-    border-radius: 20px;
-    box-shadow: 
-    2px 2px 6px 0 rgba(0, 0, 0, 0.25),
-    -2px -2px 8px 0 rgba(0, 0, 0, 0.25);
-    background-color: #2d2d2d;
-    padding: 20px;
-    width: fit-content;
-    height: fit-content;
-    margin: auto;
+#dot {
+    color: #00C6CF;
 }
 
-nav {
-    border: outset 2px rgba(255, 255, 255,0.2);
-    border-radius: 20px;
-    box-shadow: 
-    12px 12px 16px 0 rgba(0, 0, 0, 0.25),
-    -12px -12px 16px 0 rgba(102, 102, 102, 0.25);
-    background: linear-gradient(-45deg, rgba(0,0,0,0.22), rgba(142, 141, 141, 0.15));
-    margin-bottom: 3.5vh;
-    
-}
-
-nav ul{
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-nav ul li {
-  float: left;
-  display: block;
-  text-align: center;
-  padding: 10px 25px;
-  color: #ffffff;
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: #ffffff;
-}
+/*warning css*/
 
 .messages {
     list-style-type: none;
@@ -142,47 +98,17 @@ nav ul li a {
   color: #ffffff;
 }
 
-#song_search {
-    width: 50vw;
-    height: 25vh;
-    padding: 16px;
-    background: orange;
-    border-radius: 20px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.5s ease;
-    box-shadow: 
-    12px 12px 16px 0 rgba(0, 0, 0, 0.25) inset,
-    -12px -12px 16px 0 rgba(102, 102, 102, 0.25) inset;
-}
 
-#artist_search{
-    width: 50vw;
-    height: 25vh;
-    padding: 16px;
-    background: green;
-    border-radius: 20px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.5s ease;
-    box-shadow: 
-    12px 12px 16px 0 rgba(0, 0, 0, 0.25) inset,
-    -12px -12px 16px 0 rgba(102, 102, 102, 0.25) inset;
-}
 
 .active {
     transform: scale(1.5);
     
 }
 
-/* Search bar and search item stuff */
+/*search bar and search item stuff*/
 
 .searchContainer {
-    background-color: #2d2d2d;
+    background-color: #1c1c1c;
     width: 50vw;
     margin-left: auto;
     margin-right: auto;
@@ -199,6 +125,7 @@ nav ul li a {
 }
 
 .searchItem{
+    cursor: pointer;
     min-width: 0;
     margin-left: 30px;
     margin-right: 30px;   
@@ -207,8 +134,8 @@ nav ul li a {
     border-bottom: outset 2px rgba(255, 255, 255,0.2);
 }
 
-.searchContainer :hover {
-    background-color: #1c1c1c; /*get rid of margin and make this look nice */
+.searchItem:hover{
+    border-bottom: solid 2px #00C6CF; /*get rid of margin and make this look nice */
 }
 
 .searchItemImg {
@@ -219,12 +146,9 @@ nav ul li a {
 }
 
 .itemSelectionContainer {
-    border: outset 2px rgba(255, 255, 255,0.2);
+    border: solid 2px #00C6CF;
     border-radius: 20px;
-    box-shadow: 
-    12px 12px 16px 0 rgba(0, 0, 0, 0.25),
-    -6px -6px 16px 0 rgba(102, 102, 102, 0.25);
-    background: linear-gradient(-45deg, rgba(0,0,0,0.22), rgba(142, 141, 141, 0.15));
+    background: #1c1c1c;
     margin-bottom: 5vh;
     margin-left: 30px;
     margin-right: 30px;    
@@ -245,22 +169,57 @@ nav ul li a {
 
 }
 
+/*make img cut off outside border*/
 .selectedItem {
-    flex: 1 1 100px;
+    flex: 0 0 150px;
     position: relative;
-    min-width: 100px;
-    max-width: 120px;
+    width: 150px;
+    height: 150px;
     box-sizing: border-box;
-    padding: 20px;
-    margin: 8px 0;
-    border: outset 2px rgba(255, 255, 255,0.2);
     border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.selectedItem::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 50%;
+    background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7));
+    border-radius: 0 0 20px 20px;
+    z-index: 1;
 }
 
 .selectedItem img {
-    max-height: 10vh;
-    min-height: 2vh;
-    border-radius: 60px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      
+    display: block;
+    border-radius: 20px;
+}
+
+/*text overlay at the bottom*/
+.selectedItem .selectedSongTitle,
+.selectedItem .selectedSongArtist {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0 6px;
+    font-size: small;
+    color: #ffffff;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    z-index: 2;
+}
+
+.selectedItem .selectedSongTitle {
+    bottom: 24px;
+}
+
+.selectedItem .selectedSongArtist {
+    bottom: 6px;
 }
 
 .selectedItem button {
@@ -271,9 +230,12 @@ nav ul li a {
     top: 0;
     right: 0;
     height: 4vh;
-    transform: translate(50%, -50%);
+
+    z-index: 5;
     
 }
+
+
 
 .selectedItem button img {
     width: 100%;
@@ -282,18 +244,20 @@ nav ul li a {
 }
 
 .selectionSubmitBtn {
+    cursor: pointer;
     margin-bottom: 5vh;
-    background-color: green;
+    background-color: #00C6CF;
     color: #ffffff;
     padding: 2vh;
-    border: outset 2px rgba(255, 255, 255,0.2);
+    border: none;
     border-radius: 20px;
-    transition: all 200ms ease-in-out;
+    font-size: x-large;
+    transition: all 400ms ease-in-out;
 }
 
 .selectionSubmitBtn:hover {
-    background-color: rgb(0, 169, 0);
-    border: outset 2px rgba(255, 255, 255, 0.333);
+    background-color: white;
+    color: #00C6CF;
 }
 
 
@@ -301,27 +265,23 @@ nav ul li a {
     filter: brightness(0) saturate(100%) invert(16%) sepia(100%) saturate(7000%) hue-rotate(0deg) brightness(95%) contrast(120%);
 }
 
-/*searchbars*/
-input {
-    color: rgb(0, 0, 0);
-    margin: 20px;
-    border-radius: 20px;
-    border-style: solid;
-    filter: drop-shadow(0 0 2px black);
-}
-
+/*searchbar*/
 input[type="text"] {
     background-image: url(/static/img/search.svg);
-    background-color: #2d2d2d;
+    background-color: #1c1c1c;
     background-size: max(30px, 30px);
     background-position: 10px 10px;
     background-repeat: no-repeat;
     padding-left: 50px;
     width: 50vw;
     line-height: 5vh;
-    border: outset 2px rgba(255, 255, 255,0.2);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.10);
+    border: solid 2px #2d2d2d;
     border-radius: 20px;
     margin-bottom: 0;
     color: #ffffff;
+}
+
+input:focus {
+    outline: none;
+    border: solid 2px #00C6CF;
 }
