@@ -50,6 +50,8 @@ h1 {
     color: #00C6CF;
 }
 
+/*logout btn*/
+
 #logoutBtn {
     background-color: #323232;
     color: #888888;
@@ -57,6 +59,13 @@ h1 {
     padding: 1vh;
     align-self: center;
     justify-self: center;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+#logoutBtn:hover {
+    background-color: #ff0000;
+    color: #ffffff;
 }
 
 
@@ -174,15 +183,10 @@ button:hover{
     font-size: 0.95rem;
     margin-bottom: 4vh;
 }
+/*search bar*/
 
 #searchWrapper {
-    background: #1a1a1a;
-    border-radius: 30px;
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #aaa;
+    margin: 2rem;
 }
  
 #userSearch {
@@ -191,8 +195,8 @@ button:hover{
     outline: none;
     color: white;
     font-size: 1rem;
-    font-family: Arial, sans-serif;
     width: 100%;
+
 }
  
 #userSearch::placeholder {
@@ -203,6 +207,16 @@ input {
     background-color: #1a1a1a;
     border: none;
     color: #888888;
+    border-radius: 40px;
+    font-size: large;
+    padding-left: 4vw;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    background-image: url(/static/img/search.svg);
+    background-position: 8px center;
+    background-size: 50px 50px;
+    background-repeat: no-repeat;
+    min-width: 30vw;
 }
 
 input:focus {
