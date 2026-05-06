@@ -48,6 +48,11 @@
 </body>
 
 <script>
+    function truncateString(str, maxLength) {
+        return str.length > maxLength
+        ? str.slice(0, maxLength - 3) + '...'
+        : str;
+    }
         fetch('/chat/my_chats/', {
         headers: { 'X-CSRFToken': '{{ csrf_token }}' }
     })
@@ -66,7 +71,7 @@
             item.classList.add('chatPreview');
             item.innerHTML = `
                 <span class="previewName">${chat.name}</span>
-                <span class="previewMsg">${chat.last_message ? chat.last_message : 'no messages yet'}</span>
+                <span class="previewMsg">${chat.last_message ? truncateString(chat.last_message) : 'no messages yet'}</span>
             `;
             item.addEventListener('click', () => {
                 window.location.href = `/chat/${chat.chat_id}/`;
