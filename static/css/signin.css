@@ -21,6 +21,10 @@ p, h1, h2 {
     font-weight: 200;
 }
 
+ul li {
+    text-decoration: none;
+}
+
 /* LOGO */
 .logoContainer{
     width: 90vw;
