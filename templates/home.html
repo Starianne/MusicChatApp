@@ -71,7 +71,7 @@
             item.classList.add('chatPreview');
             item.innerHTML = `
                 <span class="previewName">${chat.name}</span>
-                <span class="previewMsg">${chat.last_message ? truncateString(chat.last_message) : 'no messages yet'}</span>
+                <span class="previewMsg">${chat.last_message ? truncateString(chat.last_message, 30) : 'no messages yet'}</span>
             `;
             item.addEventListener('click', () => {
                 window.location.href = `/chat/${chat.chat_id}/`;
