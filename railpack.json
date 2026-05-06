@@ -1,0 +1,5 @@
+{
+  "deploy": {
+    "startCommand": "python manage.py migrate && python manage.py collectstatic --noinput && daphne -b 0.0.0.0 -p $PORT spotify_chat_app_project.asgi:application"
+  }
+}
