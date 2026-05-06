@@ -12,5 +12,8 @@ urlpatterns = [
     path("matching/", views.matching_view, name="matching"),
     path("my_chats/", views.my_chats, name="my_chats"),
     path("search_users/", views.search_users, name="search_users"),
+    path("search_all_users/", views.search_all_users, name="search_all_users"),
     path("force_match/", views.force_match, name="force_match"),  
+    path("create_group_chat/", views.create_group_chat, name="create_group_chat"),
+    path("add_member/", views.add_member, name="add_member"),
 ]

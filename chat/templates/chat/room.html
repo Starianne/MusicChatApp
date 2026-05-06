@@ -66,12 +66,26 @@
             </div>
         {% endif %}
     </div>
-    <input id="chat-message-input" type="text" size="100">
+    <input id="chatMessageInput" type="text" size="100" autocomplete="off">
 
+</div>
+<div id="groupChatModal">
+    <div id="groupChatInner">
+        <svg id="closeGroupModal" fill="#ffffff" width="30px" height="30px" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 13.7851 49.5742 L 42.2382 49.5742 C 47.1366 49.5742 49.5743 47.1367 49.5743 42.3086 L 49.5743 13.6914 C 49.5743 8.8633 47.1366 6.4258 42.2382 6.4258 L 13.7851 6.4258 C 8.9101 6.4258 6.4257 8.8398 6.4257 13.6914 L 6.4257 42.3086 C 6.4257 47.1602 8.9101 49.5742 13.7851 49.5742 Z M 13.8554 45.8008 C 11.5117 45.8008 10.1992 44.5586 10.1992 42.1211 L 10.1992 13.8789 C 10.1992 11.4414 11.5117 10.1992 13.8554 10.1992 L 42.1679 10.1992 C 44.4882 10.1992 45.8007 11.4414 45.8007 13.8789 L 45.8007 42.1211 C 45.8007 44.5586 44.4882 45.8008 42.1679 45.8008 Z M 20.0195 37.8789 C 20.5351 37.8789 21.0039 37.6680 21.3554 37.2930 L 28.0117 30.6367 L 34.6679 37.2930 C 35.0195 37.6445 35.4882 37.8789 36.0273 37.8789 C 37.0585 37.8789 37.9023 37.0352 37.9023 35.9805 C 37.9023 35.4414 37.6913 35.0196 37.3398 34.6445 L 30.6835 27.9883 L 37.3632 21.2852 C 37.7382 20.8867 37.9257 20.4883 37.9257 19.9727 C 37.9257 18.9414 37.0820 18.0977 36.0507 18.0977 C 35.5585 18.0977 35.1366 18.2852 34.7382 18.6836 L 28.0117 25.3633 L 21.3085 18.7071 C 20.9570 18.3320 20.5351 18.1445 20.0195 18.1445 C 18.9648 18.1445 18.1444 18.9649 18.1444 19.9961 C 18.1444 20.5118 18.3320 20.9571 18.7070 21.3086 L 25.3632 27.9883 L 18.7070 34.6680 C 18.3320 35.0196 18.1444 35.4649 18.1444 35.9805 C 18.1444 37.0352 18.9648 37.8789 20.0195 37.8789 Z"/>
+        </svg>
+        <h2>new group chat</h2>
+        <input id="groupNameInput" type="text" placeholder="chat name..." />
+        <input id="userSearchInput" type="text" placeholder="search users..." />
+        <div id="userSearchResults"></div>
+        <div id="addedUsers"></div>
+        <button id="createGroupBtn">create</button>
+    </div>
 </div>
 </div>
     {{ chat_id|json_script:"chat-id" }}
     {{ members|json_script:"members-data" }}
+</body>    
     <script>
         const chatId = JSON.parse(document.getElementById('chat-id').textContent);
         const currentUser = "{{ current_user }}";
@@ -87,10 +101,11 @@
             }
         }
 
-        if ("{{chat_name}}" == "" && memberAmount == 2) {
-            //add other user's username on title of chat
+        if ("{{chat_name}}" != "" ) {
+            document.getElementById("chatname").innerText = "{{chat_name}}";
+        } else if (memberAmount == 2) {
+            //add other users username on title of chat
             if (members[0]["user__username"] == currentUser) {
-                console.log(memberAmount)
                 document.getElementById("chatname").innerText += members[1]["user__username"];
             } else {
                 document.getElementById("chatname").innerText += members[0]["user__username"];
@@ -156,51 +171,109 @@
 
 
         //userblock option
+        const isGroup = {{ is_group|yesno:"true,false" }};
+
         document.querySelector('#chatoptions').addEventListener("click", function() {
             if (document.getElementById('blockUserDiv')) return;
 
-            const otherUser = members[0]["user__username"] === currentUser
-                ? members[1]["user__username"]
-                : members[0]["user__username"];
+            const optionsDiv = document.createElement("div");
+            optionsDiv.id = "blockUserDiv";
 
-            const blockUserDiv = document.createElement("div");
-            blockUserDiv.id = "blockUserDiv";
-            blockUserDiv.innerHTML = `
-                <svg id="closeBlockBtn" fill="#ffffff" width="30px" height="30px" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M 13.7851 49.5742 L 42.2382 49.5742 C 47.1366 49.5742 49.5743 47.1367 49.5743 42.3086 L 49.5743 13.6914 C 49.5743 8.8633 47.1366 6.4258 42.2382 6.4258 L 13.7851 6.4258 C 8.9101 6.4258 6.4257 8.8398 6.4257 13.6914 L 6.4257 42.3086 C 6.4257 47.1602 8.9101 49.5742 13.7851 49.5742 Z M 13.8554 45.8008 C 11.5117 45.8008 10.1992 44.5586 10.1992 42.1211 L 10.1992 13.8789 C 10.1992 11.4414 11.5117 10.1992 13.8554 10.1992 L 42.1679 10.1992 C 44.4882 10.1992 45.8007 11.4414 45.8007 13.8789 L 45.8007 42.1211 C 45.8007 44.5586 44.4882 45.8008 42.1679 45.8008 Z M 20.0195 37.8789 C 20.5351 37.8789 21.0039 37.6680 21.3554 37.2930 L 28.0117 30.6367 L 34.6679 37.2930 C 35.0195 37.6445 35.4882 37.8789 36.0273 37.8789 C 37.0585 37.8789 37.9023 37.0352 37.9023 35.9805 C 37.9023 35.4414 37.6913 35.0196 37.3398 34.6445 L 30.6835 27.9883 L 37.3632 21.2852 C 37.7382 20.8867 37.9257 20.4883 37.9257 19.9727 C 37.9257 18.9414 37.0820 18.0977 36.0507 18.0977 C 35.5585 18.0977 35.1366 18.2852 34.7382 18.6836 L 28.0117 25.3633 L 21.3085 18.7071 C 20.9570 18.3320 20.5351 18.1445 20.0195 18.1445 C 18.9648 18.1445 18.1444 18.9649 18.1444 19.9961 C 18.1444 20.5118 18.3320 20.9571 18.7070 21.3086 L 25.3632 27.9883 L 18.7070 34.6680 C 18.3320 35.0196 18.1444 35.4649 18.1444 35.9805 C 18.1444 37.0352 18.9648 37.8789 20.0195 37.8789 Z"/>
-                </svg>
-                <h1>${otherUser}</h1>
-                <button id="blockBtn">block</button>
-            `;
-            document.body.appendChild(blockUserDiv);
+            if (isGroup) {
+                optionsDiv.innerHTML = `
+                    <svg id="closeBlockBtn" fill="#ffffff" width="30px" height="30px" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 13.7851 49.5742 L 42.2382 49.5742 C 47.1366 49.5742 49.5743 47.1367 49.5743 42.3086 L 49.5743 13.6914 C 49.5743 8.8633 47.1366 6.4258 42.2382 6.4258 L 13.7851 6.4258 C 8.9101 6.4258 6.4257 8.8398 6.4257 13.6914 L 6.4257 42.3086 C 6.4257 47.1602 8.9101 49.5742 13.7851 49.5742 Z M 13.8554 45.8008 C 11.5117 45.8008 10.1992 44.5586 10.1992 42.1211 L 10.1992 13.8789 C 10.1992 11.4414 11.5117 10.1992 13.8554 10.1992 L 42.1679 10.1992 C 44.4882 10.1992 45.8007 11.4414 45.8007 13.8789 L 45.8007 42.1211 C 45.8007 44.5586 44.4882 45.8008 42.1679 45.8008 Z M 20.0195 37.8789 C 20.5351 37.8789 21.0039 37.6680 21.3554 37.2930 L 28.0117 30.6367 L 34.6679 37.2930 C 35.0195 37.6445 35.4882 37.8789 36.0273 37.8789 C 37.0585 37.8789 37.9023 37.0352 37.9023 35.9805 C 37.9023 35.4414 37.6913 35.0196 37.3398 34.6445 L 30.6835 27.9883 L 37.3632 21.2852 C 37.7382 20.8867 37.9257 20.4883 37.9257 19.9727 C 37.9257 18.9414 37.0820 18.0977 36.0507 18.0977 C 35.5585 18.0977 35.1366 18.2852 34.7382 18.6836 L 28.0117 25.3633 L 21.3085 18.7071 C 20.9570 18.3320 20.5351 18.1445 20.0195 18.1445 C 18.9648 18.1445 18.1444 18.9649 18.1444 19.9961 C 18.1444 20.5118 18.3320 20.9571 18.7070 21.3086 L 25.3632 27.9883 L 18.7070 34.6680 C 18.3320 35.0196 18.1444 35.4649 18.1444 35.9805 C 18.1444 37.0352 18.9648 37.8789 20.0195 37.8789 Z"/>
+                    </svg>
+                    <h1>{{chat_name}}</h1>
+                    <input id="addMemberInput" type="text" placeholder="add username..." />
+                    <button id="addMemberBtn">add member</button>
+                    <button id="leaveGroupBtn">leave group</button>
+                `;
+                document.body.appendChild(optionsDiv);
 
-            document.getElementById('closeBlockBtn').addEventListener('click', () => blockUserDiv.remove());
-            
-            //use leave_chat like other functions
-            document.getElementById('blockBtn').addEventListener('click', () => {
-                fetch(`/chat/${chatId}/leave/`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}',
-                        'Content-Type': 'application/json',
-                    },
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'ok') {
-                        window.location.href = '/chat/';
-                    }
+                document.getElementById('closeBlockBtn').addEventListener('click', () => optionsDiv.remove());
+
+                document.getElementById('addMemberBtn').addEventListener('click', () => {
+                    const username = document.getElementById('addMemberInput').value.trim();
+                    if (!username) return;
+                    fetch(`/chat/add_member/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ username, chat_id: chatId }),
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.ok) {
+                            document.getElementById('addMemberInput').value = '';
+                            alert(`${username} added!`);
+                        } else {
+                            alert(`couldn't find user "${username}"`);
+                        }
+                    });
                 });
-            });
+
+                document.getElementById('leaveGroupBtn').addEventListener('click', () => {
+                    fetch(`/chat/${chatId}/leave/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'ok') window.location.href = '/chat/';
+                    });
+                });
+
+            } else {
+                //normal block behaviour
+                const otherUser = members[0]["user__username"] === currentUser
+                    ? members[1]["user__username"]
+                    : members[0]["user__username"];
+
+                optionsDiv.innerHTML = `
+                    <svg id="closeBlockBtn" fill="#ffffff" width="30px" height="30px" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 13.7851 49.5742 L 42.2382 49.5742 C 47.1366 49.5742 49.5743 47.1367 49.5743 42.3086 L 49.5743 13.6914 C 49.5743 8.8633 47.1366 6.4258 42.2382 6.4258 L 13.7851 6.4258 C 8.9101 6.4258 6.4257 8.8398 6.4257 13.6914 L 6.4257 42.3086 C 6.4257 47.1602 8.9101 49.5742 13.7851 49.5742 Z M 13.8554 45.8008 C 11.5117 45.8008 10.1992 44.5586 10.1992 42.1211 L 10.1992 13.8789 C 10.1992 11.4414 11.5117 10.1992 13.8554 10.1992 L 42.1679 10.1992 C 44.4882 10.1992 45.8007 11.4414 45.8007 13.8789 L 45.8007 42.1211 C 45.8007 44.5586 44.4882 45.8008 42.1679 45.8008 Z M 20.0195 37.8789 C 20.5351 37.8789 21.0039 37.6680 21.3554 37.2930 L 28.0117 30.6367 L 34.6679 37.2930 C 35.0195 37.6445 35.4882 37.8789 36.0273 37.8789 C 37.0585 37.8789 37.9023 37.0352 37.9023 35.9805 C 37.9023 35.4414 37.6913 35.0196 37.3398 34.6445 L 30.6835 27.9883 L 37.3632 21.2852 C 37.7382 20.8867 37.9257 20.4883 37.9257 19.9727 C 37.9257 18.9414 37.0820 18.0977 36.0507 18.0977 C 35.5585 18.0977 35.1366 18.2852 34.7382 18.6836 L 28.0117 25.3633 L 21.3085 18.7071 C 20.9570 18.3320 20.5351 18.1445 20.0195 18.1445 C 18.9648 18.1445 18.1444 18.9649 18.1444 19.9961 C 18.1444 20.5118 18.3320 20.9571 18.7070 21.3086 L 25.3632 27.9883 L 18.7070 34.6680 C 18.3320 35.0196 18.1444 35.4649 18.1444 35.9805 C 18.1444 37.0352 18.9648 37.8789 20.0195 37.8789 Z"/>
+                    </svg>
+                    <h1>${otherUser}</h1>
+                    <button id="blockBtn">block</button>
+                `;
+                document.body.appendChild(optionsDiv);
+
+                document.getElementById('closeBlockBtn').addEventListener('click', () => optionsDiv.remove());
+                document.getElementById('blockBtn').addEventListener('click', () => {
+                    fetch(`/chat/${chatId}/leave/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'ok') window.location.href = '/chat/';
+                    });
+                });
+            }
         });
 
 
         const newMessage = document.querySelector('.newMessage');
+        
+        //hide intro if ACCEPTED
+        if (currentChatUser && currentChatUser.status === "ACCEPTED") {
+            if (newMessage) newMessage.style.display = 'none';
+        }
+
         //new user intro messages
         if (currentChatUser && currentChatUser.status == "PENDING") {
             if (currentChatUser.role == "admin") {
                 //if they send a message, hide the intro
-                document.querySelector('#chat-message-input').addEventListener('keyup', function(e) {
+                document.querySelector('#chatMessageInput').addEventListener('keyup', function(e) {
                     if (e.key === 'Enter' && this.value.trim() !== '') {
                         if (newMessage) newMessage.style.display = 'none';
                     }
@@ -331,10 +404,10 @@
         };
 
         //allows user to submit message to chat by pressing enter if there is a message
-        document.querySelector('#chat-message-input').focus();
-        document.querySelector('#chat-message-input').onkeyup = function(e) {
+        document.querySelector('#chatMessageInput').focus();
+        document.querySelector('#chatMessageInput').onkeyup = function(e) {
             if (e.key === 'Enter') {  // enter, return
-                const messageInputDom = document.querySelector('#chat-message-input');
+                const messageInputDom = document.querySelector('#chatMessageInput');
                 const message = messageInputDom.value;
                 if (message != '') {
                     chatSocket.send(JSON.stringify({
@@ -352,6 +425,121 @@
             const chatlog = document.querySelector('#chatlog');
             chatlog.scrollTop = chatlog.scrollHeight;
         };
+
+        //adding groupchats:
+
+        const addedUsernames = new Set(); //like array but ignores duplicates
+
+        document.getElementById('newChat').addEventListener('click', () => {
+            document.getElementById('groupChatModal').style.display = 'flex';
+        });
+
+        document.getElementById('closeGroupModal').addEventListener('click', () => {
+            closeGroupModal();
+        });
+
+        function closeGroupModal() {
+            document.getElementById('groupChatModal').style.display = 'none';
+            document.getElementById('groupNameInput').value = '';
+            document.getElementById('userSearchInput').value = '';
+            document.getElementById('userSearchResults').innerHTML = '';
+            document.getElementById('addedUsers').innerHTML = '';
+            addedUsernames.clear();
+        }
+
+        //search like home, every 250ms fetches
+        const groupSearchInput = document.getElementById('userSearchInput');
+        const groupDropdown = document.getElementById('userSearchResults');
+        let groupDebounceTimer;
+
+        groupSearchInput.addEventListener('input', () => {
+            clearTimeout(groupDebounceTimer);
+            const query = groupSearchInput.value.trim();
+
+            if (query.length === 0) {
+                groupDropdown.style.display = 'none';
+                groupDropdown.innerHTML = '';
+                return;
+            }
+
+            groupDebounceTimer = setTimeout(() => {
+                fetch(`/chat/search_all_users/?q=${encodeURIComponent(query)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        groupDropdown.innerHTML = '';
+
+                        if (data.users.length === 0) {
+                            groupDropdown.innerHTML = `<div class="noResults">no users found</div>`;
+                        } else {
+                            data.users.forEach(user => {
+                                if (addedUsernames.has(user.username)) return;
+                                const item = document.createElement('div');
+                                item.classList.add('searchResultItem');
+                                item.textContent = user.username;
+                                item.addEventListener('click', () => {
+                                    addUser(user.username);
+                                    groupDropdown.style.display = 'none';
+                                });
+                                groupDropdown.appendChild(item);
+                            });
+                        }
+
+                        groupDropdown.style.display = 'block';
+                    });
+            }, 250);
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!document.getElementById('groupChatInner').contains(e.target)) {
+                groupDropdown.style.display = 'none';
+            }
+        });
+        function addUser(username) {
+            if (addedUsernames.has(username)) return;
+            addedUsernames.add(username);
+
+            const tag = document.createElement('div');
+            tag.classList.add('userTag');
+            tag.innerHTML = `${username} <span class="removeUser" data-username="${username}">x</span>`;
+            document.getElementById('addedUsers').appendChild(tag);
+
+            //clear search
+            document.getElementById('userSearchInput').value = '';
+            document.getElementById('userSearchResults').innerHTML = '';
+        }
+
+        //remove user tag
+        document.getElementById('addedUsers').addEventListener('click', function(e) {
+            if (e.target.classList.contains('removeUser')) {
+                const username = e.target.dataset.username;
+                addedUsernames.delete(username);
+                e.target.parentElement.remove();
+            }
+        });
+
+        //submit
+        document.getElementById('createGroupBtn').addEventListener('click', () => {
+            const name = document.getElementById('groupNameInput').value.trim();
+            if (!name) { alert('please give the chat a name'); return; }
+            if (addedUsernames.size === 0) { alert('please add at least one user'); return; }
+
+            fetch('/chat/create_group_chat/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify({ name, usernames: [...addedUsernames] }),
+            })
+            .then(res => res.json())
+            .then(data => {
+                closeGroupModal();
+                window.location.href = `/chat/${data.chat_id}/`;
+            });
+        });
+
+        
+
     </script>    
-</body>
+
 </html>

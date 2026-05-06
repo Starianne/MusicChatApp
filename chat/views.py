@@ -19,12 +19,11 @@ def index(request):
 
 @login_required
 def room(request, chat_id):
-    #pass chat messages, sender user id and other_members id to room AND CHAT NAME
+    #pass chat messages, sender user id and other_members id to room AND CHAT NAME + is group
     members = list(ChatMember.objects.filter(chat_id = chat_id).values("id", "user_id", "user__username", "role", "status"))
     messages = Message.objects.filter(chat_id=chat_id).select_related("sender").order_by('created_at')
-    chat_name = Chat.objects.get(id = chat_id).name
-    print(f"this is the chatname: {chat_name}")
-    return render(request, "chat/room.html",  {"chat_id": chat_id, "chat_name" : chat_name, "messages": messages, "current_user" : request.user.username, "members" : members})
+    chat = Chat.objects.get(id = chat_id)
+    return render(request, "chat/room.html",  {"chat_id": chat_id, "chat_name" : chat.name, "is_group": chat.is_group, "messages": messages, "current_user" : request.user.username, "members" : members})
 
 def none_found_view(request):
     return render(request, "chat/none_found.html")
@@ -158,7 +157,8 @@ def create_group_chat(request):
     ChatMember.objects.create(
         chat = chat,
         user = request.user,
-        role = "admin"
+        role = "admin",
+        status="ACCEPTED"  #only for admin
     )
 
     for username in usernames:
@@ -171,23 +171,27 @@ def create_group_chat(request):
     return JsonResponse({"chat_id" : chat.id})
 
 @require_POST
-def add_member(request, chat_id):
+def add_member(request):
     data = json.loads(request.body)
     username = data["username"]
-    chat = Chat.objects.get(id = chat_id)
-    user = CurrentUserModel.objects.get(username = username)
-    
-    ChatMember.objects.get_or_create(chat = chat, user = user)
-
-    return JsonResponse({"ok" : True})
+    chat_id = data["chat_id"]
+    try:
+        chat = Chat.objects.get(id=chat_id)
+        user = CurrentUserModel.objects.get(username=username)
+        ChatMember.objects.get_or_create(chat=chat, user=user)
+        return JsonResponse({"ok": True})
+    except CurrentUserModel.DoesNotExist:
+        return JsonResponse({"ok": False, "error": "user not found"}, status=404)
 
 @login_required
 @require_POST
 def leave_chat(request, chat_id):
     try:
-        member_count = ChatMember.objects.filter(chat_id=chat_id).count()
-
-        if member_count <= 2:
+        chat = Chat.objects.get(id=chat_id)
+        
+        if chat.is_group: #if group only leave chat
+            ChatMember.objects.filter(chat_id=chat_id, user=request.user).delete()
+        else:
             #get other user to block
             other_member = ChatMember.objects.filter(
                 chat_id=chat_id
@@ -214,11 +218,7 @@ def leave_chat(request, chat_id):
             #delete match first so the onetoone becomes null before chat gets deleted
             Match.objects.filter(chat_id=chat_id).delete()
             Chat.objects.filter(id=chat_id).delete()
-
-        else:
-            #remove from groupchat
-            ChatMember.objects.filter(chat_id=chat_id, user=request.user).delete()
-
+        
         return JsonResponse({"status": "ok"})
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)}, status=400)
@@ -342,10 +342,31 @@ def force_match(request):
  
         ChatMember.objects.bulk_create([
             ChatMember(chat=chat, user=request.user, role="admin", status="ACCEPTED"),
-            ChatMember(chat=chat, user=target_user, status="ACCEPTED"),
+            ChatMember(chat=chat, user=target_user, status="PENDING"),
         ])
  
         match.chat = chat
         match.save(update_fields=["chat"])
  
     return JsonResponse({"chat_id": chat.id})
+
+#search for gcs
+@login_required
+def search_all_users(request):
+    query = request.GET.get("q", "").strip()
+    if len(query) < 1:
+        return JsonResponse({"users": []})
+
+    blocked_users = UserBlocked.objects.filter(blocker=request.user).values_list("blocked_user_id", flat=True)
+    blocked_by_users = UserBlocked.objects.filter(blocked_user=request.user).values_list("blocker_id", flat=True)
+
+    excluded = list(blocked_users) + list(blocked_by_users) + [request.user.id]
+
+    users = (
+        CurrentUserModel.objects.filter(username__icontains=query)
+        .exclude(id__in=excluded)
+        .order_by("username")[:5]
+    )
+    return JsonResponse({
+        "users": [{"id": u.id, "username": u.username} for u in users]
+    })
