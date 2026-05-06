@@ -20,9 +20,8 @@ p, h1, h2 {
     color:rgb(255, 255, 255);
     font-weight: 200;
 }
-
-ul li {
-    text-decoration: none;
+ul {
+    list-style-type: none;
 }
 
 /* LOGO */
