@@ -143,6 +143,7 @@ button {
     justify-content: flex-end;
     flex-direction: column;
     height: 85vh;
+    min-width: 0;
 }
 
 .message {
@@ -151,6 +152,7 @@ button {
     border-radius: 12px;
     margin: 1vh;
     overflow-wrap: break-word;
+    word-break: break-all;
     margin-bottom: 1vh;
 }
 
