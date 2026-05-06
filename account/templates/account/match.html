@@ -27,30 +27,11 @@
     </div>
 </body>
 <script>
-    let songSearchContainer = document.getElementById('song_search')
+    let songSearchContainer = document.getElementById('song_search');
 
     //add event listener click to lead to other pages 
-    function animateWithEvent(element, animationClass) {
-        return new Promise((resolve) => {
-            element.style.background = '#00C6CF'
-            element.classList.toggle(animationClass);
-            element.addEventListener('transitionend', () => {
-                resolve();
-            }, { once: true});
-        });
-    }
     songSearchContainer.addEventListener('click', function() {
-        function songSearchTransition() {
-            return new Promise((resolve) => {
-                resolve(window.location.replace("/account/songSearch"));
-            });
-        }
-        async function sequenceSong(){
-            await animateWithEvent(songSearchContainer, 'active');
-            await songSearchTransition();
-        }
-
-        sequenceSong();
-    });
+    window.location.href = "/account/songSearch/";
+});
 </script>
 </html>
