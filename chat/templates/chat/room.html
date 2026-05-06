@@ -365,13 +365,12 @@
             }
         }
         const chatSocket = new WebSocket(
-            'ws://'
+            (window.location.protocol === 'https:' ? 'wss://' : 'ws://')
             + window.location.host
             + '/ws/chat/'
             + chatId
             + '/'
         );
-
         //display newly sent messages
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
