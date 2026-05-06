@@ -94,5 +94,118 @@
             });
         });
 
+        //adding groupchats:
+
+        const addedUsernames = new Set(); //like array but ignores duplicates
+
+        document.getElementById('newChat').addEventListener('click', () => {
+            document.getElementById('groupChatModal').style.display = 'flex';
+        });
+
+        document.getElementById('closeGroupModal').addEventListener('click', () => {
+            closeGroupModal();
+        });
+
+        function closeGroupModal() {
+            document.getElementById('groupChatModal').style.display = 'none';
+            document.getElementById('groupNameInput').value = '';
+            document.getElementById('userSearchInput').value = '';
+            document.getElementById('userSearchResults').innerHTML = '';
+            document.getElementById('addedUsers').innerHTML = '';
+            addedUsernames.clear();
+        }
+
+        //search like home, every 250ms fetches
+        const groupSearchInput = document.getElementById('userSearchInput');
+        const groupDropdown = document.getElementById('userSearchResults');
+        let groupDebounceTimer;
+
+        groupSearchInput.addEventListener('input', () => {
+            clearTimeout(groupDebounceTimer);
+            const query = groupSearchInput.value.trim();
+
+            if (query.length === 0) {
+                groupDropdown.style.display = 'none';
+                groupDropdown.innerHTML = '';
+                return;
+            }
+
+            groupDebounceTimer = setTimeout(() => {
+                fetch(`/chat/search_all_users/?q=${encodeURIComponent(query)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        groupDropdown.innerHTML = '';
+
+                        if (data.users.length === 0) {
+                            groupDropdown.innerHTML = `<div class="noResults">no users found</div>`;
+                        } else {
+                            data.users.forEach(user => {
+                                if (addedUsernames.has(user.username)) return;
+                                const item = document.createElement('div');
+                                item.classList.add('searchResultItem');
+                                item.textContent = user.username;
+                                item.addEventListener('click', () => {
+                                    addUser(user.username);
+                                    groupDropdown.style.display = 'none';
+                                });
+                                groupDropdown.appendChild(item);
+                            });
+                        }
+
+                        groupDropdown.style.display = 'block';
+                    });
+            }, 250);
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!document.getElementById('groupChatInner').contains(e.target)) {
+                groupDropdown.style.display = 'none';
+            }
+        });
+        function addUser(username) {
+            if (addedUsernames.has(username)) return;
+            addedUsernames.add(username);
+
+            const tag = document.createElement('div');
+            tag.classList.add('userTag');
+            tag.innerHTML = `${username} <span class="removeUser" data-username="${username}">x</span>`;
+            document.getElementById('addedUsers').appendChild(tag);
+
+            //clear search
+            document.getElementById('userSearchInput').value = '';
+            document.getElementById('userSearchResults').innerHTML = '';
+        }
+
+        //remove user tag
+        document.getElementById('addedUsers').addEventListener('click', function(e) {
+            if (e.target.classList.contains('removeUser')) {
+                const username = e.target.dataset.username;
+                addedUsernames.delete(username);
+                e.target.parentElement.remove();
+            }
+        });
+
+        //submit
+        document.getElementById('createGroupBtn').addEventListener('click', () => {
+            const name = document.getElementById('groupNameInput').value.trim();
+            if (!name) { alert('please give the chat a name'); return; }
+            if (addedUsernames.size === 0) { alert('please add at least one user'); return; }
+
+            fetch('/chat/create_group_chat/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify({ name, usernames: [...addedUsernames] }),
+            })
+            .then(res => res.json())
+            .then(data => {
+                closeGroupModal();
+                window.location.href = `/chat/${data.chat_id}/`;
+            });
+        });
+
+
 </script>
 </html>
